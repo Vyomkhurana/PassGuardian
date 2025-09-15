@@ -1,9 +1,12 @@
 const express = require("express");
 const axios = require("axios");  
 const bodyParser = require("body-parser");
+const path = require("path");
 
 const app = express();
 app.use(bodyParser.json());
+
+app.use(express.static(path.join(__dirname, "../frontend")));
 
 // Route: frontend calls this
 app.post("/analyze", async (req, res) => {
@@ -24,6 +27,10 @@ app.post("/analyze", async (req, res) => {
         console.error(error.response?.data || error.message);
         res.status(500).json({ error: "Error analyzing password" });
     }
+});
+
+app.get("/", (req, res) => {
+    res.send("Backend is running 🚀. Use POST /analyze");
 });
 
 app.listen(5000, () => {
