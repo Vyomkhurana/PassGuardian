@@ -1,20 +1,506 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>PassGuardian 🔐</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔐 PassGuardian - Enterprise Password Security Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <div class="container">
-    <h1>PassGuardian</h1>
-    <p>Check your password strength instantly ⚡</p>
+    <div class="app">
+        <!-- Background Animation -->
+        <div class="background-animation">
+            <div class="floating-icon"><i class="fas fa-shield-alt"></i></div>
+            <div class="floating-icon"><i class="fas fa-lock"></i></div>
+            <div class="floating-icon"><i class="fas fa-key"></i></div>
+            <div class="floating-icon"><i class="fas fa-eye"></i></div>
+            <div class="floating-icon"><i class="fas fa-fingerprint"></i></div>
+            <div class="floating-icon"><i class="fas fa-user-secret"></i></div>
+        </div>
 
-    <input type="password" id="passwordInput" placeholder="Enter your password">
-    <button onclick="analyzePassword()">Analyze</button>
+        <!-- Dashboard Header -->
+        <header class="dashboard-header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo">
+                        <i class="fas fa-shield-alt logo-icon"></i>
+                        <div class="logo-text">
+                            <h1>PassGuardian</h1>
+                            <span class="logo-subtitle">Enterprise Security Platform</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="header-stats">
+                    <div class="stat-item">
+                        <div class="stat-value" id="totalChecks">0</div>
+                        <div class="stat-label">Total Checks</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="breachesFound">0</div>
+                        <div class="stat-label">Breaches Found</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="averageStrength">-</div>
+                        <div class="stat-label">Avg Strength</div>
+                    </div>
+                </div>
+            </div>
+        </header>
 
-    <div id="result"></div>
-  </div>
-  <script src="script.js"></script>
+        <!-- Main Dashboard -->
+        <main class="dashboard-main">
+            <div class="container">
+                <!-- Welcome Section -->
+                <section class="welcome-section">
+                    <div class="welcome-content">
+                        <h2>🛡️ Advanced Password Security Analysis</h2>
+                        <p>Analyze your passwords against millions of known breaches, calculate entropy, and get actionable security recommendations. Our enterprise-grade security platform helps protect your digital identity.</p>
+                    </div>
+                    <div class="security-badges">
+                        <div class="badge">
+                            <i class="fas fa-database"></i>
+                            <span>615M+ Breach Records</span>
+                        </div>
+                        <div class="badge">
+                            <i class="fas fa-lock"></i>
+                            <span>Zero Data Storage</span>
+                        </div>
+                        <div class="badge">
+                            <i class="fas fa-bolt"></i>
+                            <span>Real-time Analysis</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Analysis Input Section -->
+                <section class="analysis-section">
+                    <div class="analysis-card">
+                        <div class="analysis-header">
+                            <i class="fas fa-microscope"></i>
+                            <h3>Password Security Analysis</h3>
+                        </div>
+                        
+                        <div class="input-container">
+                            <div class="input-wrapper">
+                                <i class="fas fa-lock input-icon"></i>
+                                <input 
+                                    type="password" 
+                                    id="passwordInput" 
+                                    placeholder="Enter your password for comprehensive security analysis..."
+                                    class="password-input"
+                                    autocomplete="off"
+                                >
+                                <button type="button" id="togglePassword" class="toggle-password">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <button id="analyzeBtn" class="analyze-btn">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>Analyze Security</span>
+                                <div class="button-loader"></div>
+                            </button>
+                        </div>
+
+                        <div class="security-notice">
+                            <i class="fas fa-info-circle"></i>
+                            <span>Your password is never stored or logged. Analysis is performed locally and through secure APIs.</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Loading Section -->
+                <section class="loading-section" id="loadingSection" style="display: none;">
+                    <div class="loading-container">
+                        <div class="loading-spinner-advanced">
+                            <div class="spinner-ring"></div>
+                            <div class="spinner-center">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                        </div>
+                        <h3 class="loading-title">Analyzing Password Security</h3>
+                        <p class="loading-text">Running comprehensive security checks...</p>
+                        <div class="loading-steps">
+                            <div class="step active" data-step="1">
+                                <div class="step-icon"><i class="fas fa-ruler"></i></div>
+                                <div class="step-content">
+                                    <div class="step-title">Length & Complexity</div>
+                                    <div class="step-desc">Analyzing character composition</div>
+                                </div>
+                                <div class="step-status"><i class="fas fa-spinner fa-spin"></i></div>
+                            </div>
+                            <div class="step" data-step="2">
+                                <div class="step-icon"><i class="fas fa-calculator"></i></div>
+                                <div class="step-content">
+                                    <div class="step-title">Entropy Calculation</div>
+                                    <div class="step-desc">Measuring randomness and unpredictability</div>
+                                </div>
+                                <div class="step-status"><i class="fas fa-clock"></i></div>
+                            </div>
+                            <div class="step" data-step="3">
+                                <div class="step-icon"><i class="fas fa-database"></i></div>
+                                <div class="step-content">
+                                    <div class="step-title">Breach Database Scan</div>
+                                    <div class="step-desc">Checking against 615M+ compromised passwords</div>
+                                </div>
+                                <div class="step-status"><i class="fas fa-clock"></i></div>
+                            </div>
+                            <div class="step" data-step="4">
+                                <div class="step-icon"><i class="fas fa-stopwatch"></i></div>
+                                <div class="step-content">
+                                    <div class="step-title">Crack Time Estimation</div>
+                                    <div class="step-desc">Estimating resistance to brute force attacks</div>
+                                </div>
+                                <div class="step-status"><i class="fas fa-clock"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Error Section -->
+                <section class="error-section" id="errorSection" style="display: none;">
+                    <div class="error-container">
+                        <div class="error-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <h3>Analysis Failed</h3>
+                        <p id="errorMessage">Something went wrong during the security analysis. Please try again.</p>
+                        <button id="retryBtn" class="retry-btn">
+                            <i class="fas fa-redo"></i>
+                            Retry Analysis
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Results Dashboard -->
+                <section class="results-section" id="resultsSection" style="display: none;">
+                    <div class="results-container">
+                        <!-- Security Score Overview -->
+                        <div class="score-overview">
+                            <div class="score-card main-score">
+                                <div class="score-header">
+                                    <i class="fas fa-chart-line"></i>
+                                    <h3>Security Score</h3>
+                                </div>
+                                <div class="score-display">
+                                    <div class="score-circle">
+                                        <canvas id="scoreChart" width="120" height="120"></canvas>
+                                        <div class="score-content">
+                                            <div class="score-value" id="scoreValue">0</div>
+                                            <div class="score-max">/100</div>
+                                        </div>
+                                    </div>
+                                    <div class="score-details">
+                                        <div class="strength-indicator" id="strengthIndicator">
+                                            <div class="strength-text" id="strengthText">Calculating...</div>
+                                            <div class="strength-description" id="strengthDescription">Please wait...</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Quick Metrics -->
+                            <div class="quick-metrics">
+                                <div class="metric-card">
+                                    <div class="metric-icon length">
+                                        <i class="fas fa-ruler-horizontal"></i>
+                                    </div>
+                                    <div class="metric-content">
+                                        <div class="metric-value" id="lengthValue">0</div>
+                                        <div class="metric-label">Characters</div>
+                                    </div>
+                                </div>
+                                <div class="metric-card">
+                                    <div class="metric-icon entropy">
+                                        <i class="fas fa-random"></i>
+                                    </div>
+                                    <div class="metric-content">
+                                        <div class="metric-value" id="entropyValue">0</div>
+                                        <div class="metric-label">Entropy (bits)</div>
+                                    </div>
+                                </div>
+                                <div class="metric-card">
+                                    <div class="metric-icon time">
+                                        <i class="fas fa-clock"></i>
+                                    </div>
+                                    <div class="metric-content">
+                                        <div class="metric-value" id="crackTimeValue">-</div>
+                                        <div class="metric-label">Crack Time</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Breach Status Alert -->
+                        <div class="breach-alert" id="breachAlert">
+                            <div class="breach-content">
+                                <div class="breach-icon" id="breachIcon">
+                                    <i class="fas fa-shield-alt"></i>
+                                </div>
+                                <div class="breach-text">
+                                    <div class="breach-title" id="breachTitle">Checking breach databases...</div>
+                                    <div class="breach-subtitle" id="breachSubtitle">Please wait...</div>
+                                </div>
+                            </div>
+                            <div class="breach-action" id="breachAction" style="display: none;">
+                                <button class="action-btn">Learn More</button>
+                            </div>
+                        </div>
+
+                        <!-- Detailed Analysis Grid -->
+                        <div class="analysis-grid">
+                            <!-- Character Composition -->
+                            <div class="analysis-card">
+                                <div class="card-header">
+                                    <i class="fas fa-font"></i>
+                                    <h4>Character Composition</h4>
+                                </div>
+                                <div class="character-analysis">
+                                    <div class="char-type" data-type="lowercase">
+                                        <div class="char-icon"><i class="fas fa-font"></i></div>
+                                        <div class="char-details">
+                                            <span class="char-label">Lowercase Letters</span>
+                                            <div class="char-indicator" id="lowercaseIndicator"></div>
+                                        </div>
+                                    </div>
+                                    <div class="char-type" data-type="uppercase">
+                                        <div class="char-icon"><i class="fas fa-font"></i></div>
+                                        <div class="char-details">
+                                            <span class="char-label">Uppercase Letters</span>
+                                            <div class="char-indicator" id="uppercaseIndicator"></div>
+                                        </div>
+                                    </div>
+                                    <div class="char-type" data-type="digits">
+                                        <div class="char-icon"><i class="fas fa-hashtag"></i></div>
+                                        <div class="char-details">
+                                            <span class="char-label">Numbers</span>
+                                            <div class="char-indicator" id="digitIndicator"></div>
+                                        </div>
+                                    </div>
+                                    <div class="char-type" data-type="symbols">
+                                        <div class="char-icon"><i class="fas fa-at"></i></div>
+                                        <div class="char-details">
+                                            <span class="char-label">Special Symbols</span>
+                                            <div class="char-indicator" id="symbolIndicator"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Security Recommendations -->
+                            <div class="analysis-card">
+                                <div class="card-header">
+                                    <i class="fas fa-lightbulb"></i>
+                                    <h4>Security Recommendations</h4>
+                                </div>
+                                <div class="recommendations" id="recommendations">
+                                    <div class="recommendation-list" id="recommendationList">
+                                        <!-- Recommendations will be populated by JavaScript -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="dashboard-footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h5>PassGuardian</h5>
+                    <p>Enterprise-grade password security analysis</p>
+                </div>
+                <div class="footer-section">
+                    <h5>Security Features</h5>
+                    <ul>
+                        <li>Zero data retention</li>
+                        <li>615M+ breach records</li>
+                        <li>Real-time analysis</li>
+                        <li>Enterprise APIs</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h5>Powered By</h5>
+                    <ul>
+                        <li>Have I Been Pwned API</li>
+                        <li>Advanced entropy algorithms</li>
+                        <li>ML-based pattern detection</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 PassGuardian Enterprise Security Platform. Built with ❤️ for better cybersecurity.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+            <!-- Loading Section -->
+            <section class="loading-section" id="loadingSection" style="display: none;">
+                <div class="loading-container">
+                    <div class="loading-spinner"></div>
+                    <p class="loading-text">Analyzing password security...</p>
+                    <div class="loading-steps">
+                        <div class="step active" data-step="1">
+                            <i class="fas fa-ruler"></i>
+                            <span>Checking length & complexity</span>
+                        </div>
+                        <div class="step" data-step="2">
+                            <i class="fas fa-calculator"></i>
+                            <span>Calculating entropy</span>
+                        </div>
+                        <div class="step" data-step="3">
+                            <i class="fas fa-database"></i>
+                            <span>Scanning breach databases</span>
+                        </div>
+                        <div class="step" data-step="4">
+                            <i class="fas fa-clock"></i>
+                            <span>Estimating crack time</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Error Section -->
+            <section class="error-section" id="errorSection" style="display: none;">
+                <div class="error-container">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>Analysis Failed</h3>
+                    <p id="errorMessage">Something went wrong. Please try again.</p>
+                    <button id="retryBtn" class="retry-btn">
+                        <i class="fas fa-redo"></i>
+                        Try Again
+                    </button>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section class="results-section" id="resultsSection" style="display: none;">
+                <div class="results-container">
+                    <div class="results-header">
+                        <i class="fas fa-chart-line"></i>
+                        <h2>Security Analysis Results</h2>
+                    </div>
+
+                    <!-- Overall Score -->
+                    <div class="overall-score" id="overallScore">
+                        <div class="score-circle">
+                            <div class="score-value" id="scoreValue">0</div>
+                            <div class="score-label">Security Score</div>
+                        </div>
+                        <div class="strength-indicator" id="strengthIndicator">
+                            <div class="strength-text" id="strengthText">Calculating...</div>
+                            <div class="strength-bar">
+                                <div class="strength-fill" id="strengthFill"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Detailed Metrics -->
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-icon">
+                                <i class="fas fa-ruler-horizontal"></i>
+                            </div>
+                            <div class="metric-content">
+                                <div class="metric-value" id="lengthValue">0</div>
+                                <div class="metric-label">Characters</div>
+                            </div>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-icon">
+                                <i class="fas fa-random"></i>
+                            </div>
+                            <div class="metric-content">
+                                <div class="metric-value" id="entropyValue">0</div>
+                                <div class="metric-label">Entropy (bits)</div>
+                            </div>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="metric-content">
+                                <div class="metric-value" id="crackTimeValue">-</div>
+                                <div class="metric-label">Crack Time</div>
+                            </div>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-icon">
+                                <i class="fas fa-palette"></i>
+                            </div>
+                            <div class="metric-content">
+                                <div class="metric-value" id="diversityValue">0</div>
+                                <div class="metric-label">Character Types</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Breach Status -->
+                    <div class="breach-status" id="breachStatus">
+                        <div class="breach-icon" id="breachIcon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="breach-content">
+                            <div class="breach-title" id="breachTitle">Checking breach databases...</div>
+                            <div class="breach-subtitle" id="breachSubtitle">Please wait...</div>
+                        </div>
+                    </div>
+
+                    <!-- Character Analysis -->
+                    <div class="character-analysis">
+                        <h3><i class="fas fa-microscope"></i> Character Analysis</h3>
+                        <div class="character-types" id="characterTypes">
+                            <div class="char-type" data-type="lowercase">
+                                <i class="fas fa-a"></i>
+                                <span>Lowercase</span>
+                                <div class="char-indicator" id="lowercaseIndicator"></div>
+                            </div>
+                            <div class="char-type" data-type="uppercase">
+                                <i class="fas fa-font"></i>
+                                <span>Uppercase</span>
+                                <div class="char-indicator" id="uppercaseIndicator"></div>
+                            </div>
+                            <div class="char-type" data-type="digits">
+                                <i class="fas fa-hashtag"></i>
+                                <span>Numbers</span>
+                                <div class="char-indicator" id="digitIndicator"></div>
+                            </div>
+                            <div class="char-type" data-type="symbols">
+                                <i class="fas fa-at"></i>
+                                <span>Symbols</span>
+                                <div class="char-indicator" id="symbolIndicator"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recommendations -->
+                    <div class="recommendations" id="recommendations">
+                        <h3><i class="fas fa-lightbulb"></i> Security Recommendations</h3>
+                        <div class="recommendation-list" id="recommendationList">
+                            <!-- Recommendations will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2025 PassGuardian. Built with ❤️ for better security.</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>

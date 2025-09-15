@@ -1,38 +1,51 @@
 const express = require("express");
-const axios = require("axios");  
-const bodyParser = require("body-parser");
+const axios = require("axios");
+const cors = require("cors");
 const path = require("path");
 
 const app = express();
-app.use(bodyParser.json());
+const PORT = 5000;
 
-app.use(express.static(path.join(__dirname, "../frontend")));
+// Middleware
+app.use(cors()); // Enable CORS for all routes
+app.use(express.json()); // Parse JSON request body
 
-// Route: frontend calls this
-app.post("/analyze", async (req, res) => {
-    try {
-        const { password } = req.body;
+// Serve static files from the frontend directory
+app.use(express.static(path.join(__dirname, '../frontend')));
 
-        // Call FastAPI service
-        const response = await axios.post(
-            "http://127.0.0.1:8000/analyze-password",
-            { password: password }, 
-            { headers: { "Content-Type": "application/json" } }
-        );
-
-        // Send FastAPI response back to frontend
-        res.json(response.data);
-
-    } catch (error) {
-        console.error(error.response?.data || error.message);
-        res.status(500).json({ error: "Error analyzing password" });
-    }
-});
-
+// Root route serves the main page
 app.get("/", (req, res) => {
-    res.send("Backend is running 🚀. Use POST /analyze");
+  res.sendFile(path.join(__dirname, '../frontend/index.html'));
 });
 
-app.listen(5000, () => {
-    console.log("Node.js backend running on http://localhost:5000");
+// Health check route
+app.get("/health", (req, res) => {
+  res.json({ 
+    status: "healthy",
+    message: "PassGuardian backend running 🚀",
+    timestamp: new Date().toISOString()
+  });
+});
+
+// Password analysis route
+app.post("/check-password", async (req, res) => {
+  try {
+    const { password } = req.body;
+
+    // Forward request to Python FastAPI service
+    const response = await axios.post("http://127.0.0.1:8001/analyze-password/", null, {
+      params: { password }
+    });
+
+    // Send Python response back to frontend
+    res.json(response.data);
+  } catch (error) {
+    console.error("Error communicating with Python service:", error.message);
+    res.status(500).json({ error: "Failed to analyze password" });
+  }
+});
+
+// Start server
+app.listen(PORT, () => {
+  console.log(`Node.js backend running on http://localhost:${PORT}`);
 });
