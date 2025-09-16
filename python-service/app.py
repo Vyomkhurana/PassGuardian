@@ -18,55 +18,79 @@ def analyze_password(password: str):
         # 1. Length of password
         length = len(password)
 
-        # 2. Entropy calculation (improved)
-        if length > 0:
-            charset_size = len(set(password))
-            if charset_size == 0:
-                charset_size = 1
-            entropy = length * math.log2(charset_size)
-        else:
-            entropy = 0
-
-        # 3. Character diversity checks
+        # 2. Character diversity checks
         has_lower = bool(re.search(r"[a-z]", password))
         has_upper = bool(re.search(r"[A-Z]", password))
         has_digit = bool(re.search(r"[0-9]", password))
         has_symbol = bool(re.search(r"[^a-zA-Z0-9]", password))
         diversity_score = sum([has_lower, has_upper, has_digit, has_symbol])
 
+        # 3. Entropy calculation (improved)
+        if length > 0:
+            # Calculate actual character set size based on character types present
+            charset_size = 0
+            if has_lower:
+                charset_size += 26
+            if has_upper:
+                charset_size += 26
+            if has_digit:
+                charset_size += 10
+            if has_symbol:
+                charset_size += 32  # Common symbols
+            
+            # Ensure minimum charset size
+            if charset_size == 0:
+                charset_size = len(set(password))
+            
+            entropy = length * math.log2(charset_size) if charset_size > 0 else 0
+        else:
+            entropy = 0
+
         # 4. Dictionary word check
         dictionary_flag = any(word in password.lower() for word in COMMON_WEAK)
 
-        # 5. Breach check (Have I Been Pwned API) with error handling
+        # 5. Breach check (Have I Been Pwned API) with improved error handling
         pwned_count = 0
+        breach_check_success = False
         try:
             sha1 = hashlib.sha1(password.encode("utf-8")).hexdigest().upper()
             prefix, suffix = sha1[:5], sha1[5:]
             
+            print(f"Checking password hash prefix: {prefix}")
+            
             # Make request with proper headers and timeout
             headers = {
-                'User-Agent': 'PassGuardian-Security-Checker',
+                'User-Agent': 'PassGuardian-Security-Checker-1.0',
                 'Add-Padding': 'true'
             }
             
             res = requests.get(
                 f"https://api.pwnedpasswords.com/range/{prefix}", 
                 headers=headers,
-                timeout=10
+                timeout=15
             )
             
+            print(f"HIBP API response status: {res.status_code}")
+            
             if res.status_code == 200:
-                for line in res.text.splitlines():
+                breach_check_success = True
+                lines = res.text.splitlines()
+                print(f"Received {len(lines)} hash suffixes from HIBP")
+                
+                for line in lines:
                     if ':' in line:
-                        hash_suffix, count = line.split(":")
+                        hash_suffix, count = line.split(":", 1)
                         if hash_suffix.upper() == suffix:
                             pwned_count = int(count)
+                            print(f"Password found in breaches: {pwned_count} times")
                             break
+                else:
+                    print("Password not found in breach database")
             else:
                 print(f"HIBP API returned status code: {res.status_code}")
                 
         except requests.exceptions.RequestException as e:
-            print(f"Error checking HIBP API: {e}")
+            print(f"Network error checking HIBP API: {e}")
             pwned_count = None
         except Exception as e:
             print(f"Unexpected error in breach check: {e}")
@@ -90,16 +114,23 @@ def analyze_password(password: str):
         else:
             years = 0
 
-        # 7. Strength assessment
+        # 7. Strength assessment (fixed logic)
         strength = "weak"
-        if pwned_count and pwned_count > 0:
+        
+        # First check if password is compromised
+        if pwned_count is not None and pwned_count > 0:
             strength = "compromised"
-        elif length >= 12 and diversity_score >= 3 and not dictionary_flag:
+        # Then assess based on characteristics
+        elif dictionary_flag or length < 4:
+            strength = "weak"
+        elif length >= 12 and diversity_score >= 3 and entropy >= 50:
             strength = "very_strong"
-        elif length >= 8 and diversity_score >= 3:
+        elif length >= 8 and diversity_score >= 3 and entropy >= 35:
             strength = "strong"
-        elif length >= 6 and diversity_score >= 2:
+        elif length >= 6 and diversity_score >= 2 and entropy >= 25:
             strength = "medium"
+        else:
+            strength = "weak"
 
         # 8. Final response
         result = {
@@ -112,13 +143,15 @@ def analyze_password(password: str):
             "has_symbol": has_symbol,
             "dictionary_word": dictionary_flag,
             "crack_time_years": round(years, 6),
-            "strength": strength
+            "strength": strength,
+            "breach_check_success": breach_check_success
         }
         
-        
+        # Add pwned count if breach check was successful
         if pwned_count is not None:
             result["pwned_count"] = pwned_count
-            
+        
+        print(f"Analysis result: {result}")
         return result
         
     except Exception as e:

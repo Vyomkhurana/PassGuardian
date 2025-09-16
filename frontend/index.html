@@ -123,35 +123,35 @@
                         <h3 class="loading-title">Analyzing Password Security</h3>
                         <p class="loading-text">Running comprehensive security checks...</p>
                         <div class="loading-steps">
-                            <div class="step active" data-step="1">
-                                <div class="step-icon"><i class="fas fa-ruler"></i></div>
+                            <div class="step" id="step1" data-step="1">
+                                <div class="step-icon"><i class="fas fa-shield-alt"></i></div>
                                 <div class="step-content">
-                                    <div class="step-title">Length & Complexity</div>
-                                    <div class="step-desc">Analyzing character composition</div>
-                                </div>
-                                <div class="step-status"><i class="fas fa-spinner fa-spin"></i></div>
-                            </div>
-                            <div class="step" data-step="2">
-                                <div class="step-icon"><i class="fas fa-calculator"></i></div>
-                                <div class="step-content">
-                                    <div class="step-title">Entropy Calculation</div>
-                                    <div class="step-desc">Measuring randomness and unpredictability</div>
+                                    <div class="step-title">Initializing Security Scanner</div>
+                                    <div class="step-desc">Loading advanced password analysis algorithms</div>
                                 </div>
                                 <div class="step-status"><i class="fas fa-clock"></i></div>
                             </div>
-                            <div class="step" data-step="3">
+                            <div class="step" id="step2" data-step="2">
+                                <div class="step-icon"><i class="fas fa-search"></i></div>
+                                <div class="step-content">
+                                    <div class="step-title">Analyzing Password Strength</div>
+                                    <div class="step-desc">Evaluating complexity and entropy patterns</div>
+                                </div>
+                                <div class="step-status"><i class="fas fa-clock"></i></div>
+                            </div>
+                            <div class="step" id="step3" data-step="3">
                                 <div class="step-icon"><i class="fas fa-database"></i></div>
                                 <div class="step-content">
-                                    <div class="step-title">Breach Database Scan</div>
-                                    <div class="step-desc">Checking against 615M+ compromised passwords</div>
+                                    <div class="step-title">Checking Vulnerability Database</div>
+                                    <div class="step-desc">Scanning against known breach databases</div>
                                 </div>
                                 <div class="step-status"><i class="fas fa-clock"></i></div>
                             </div>
-                            <div class="step" data-step="4">
-                                <div class="step-icon"><i class="fas fa-stopwatch"></i></div>
+                            <div class="step" id="step4" data-step="4">
+                                <div class="step-icon"><i class="fas fa-file-shield"></i></div>
                                 <div class="step-content">
-                                    <div class="step-title">Crack Time Estimation</div>
-                                    <div class="step-desc">Estimating resistance to brute force attacks</div>
+                                    <div class="step-title">Generating Security Report</div>
+                                    <div class="step-desc">Compiling comprehensive analysis results</div>
                                 </div>
                                 <div class="step-status"><i class="fas fa-clock"></i></div>
                             </div>
@@ -174,133 +174,252 @@
                     </div>
                 </section>
 
-                <!-- Results Dashboard -->
+                <!-- Professional Cybersecurity Analysis Dashboard -->
                 <section class="results-section" id="resultsSection" style="display: none;">
                     <div class="results-container">
-                        <!-- Security Score Overview -->
-                        <div class="score-overview">
-                            <div class="score-card main-score">
-                                <div class="score-header">
-                                    <i class="fas fa-chart-line"></i>
-                                    <h3>Security Score</h3>
-                                </div>
-                                <div class="score-display">
-                                    <div class="score-circle">
-                                        <canvas id="scoreChart" width="120" height="120"></canvas>
-                                        <div class="score-content">
-                                            <div class="score-value" id="scoreValue">0</div>
-                                            <div class="score-max">/100</div>
+                        
+                        <!-- Threat Level Alert -->
+                        <div class="threat-level-alert" id="threatLevelAlert">
+                            <div class="alert-icon" id="alertIcon">
+                                <i class="fas fa-shield-check"></i>
+                            </div>
+                            <div class="alert-content">
+                                <h3 class="alert-title" id="alertTitle">Security Analysis Complete</h3>
+                                <p class="alert-message" id="alertMessage">Your password has been analyzed</p>
+                            </div>
+                            <div class="alert-status" id="alertStatus">
+                                <span class="status-indicator" id="statusIndicator"></span>
+                            </div>
+                        </div>
+
+                        <!-- Main Security Dashboard -->
+                        <div class="security-dashboard">
+                            
+                            <!-- Left Panel: Security Score & Risk Assessment -->
+                            <div class="dashboard-left">
+                                
+                                <!-- Advanced Security Score -->
+                                <div class="security-score-card">
+                                    <div class="card-header">
+                                        <div class="header-icon">
+                                            <i class="fas fa-chart-line"></i>
+                                        </div>
+                                        <div class="header-content">
+                                            <h3>Security Score Analysis</h3>
+                                            <p>Comprehensive password strength assessment</p>
                                         </div>
                                     </div>
-                                    <div class="score-details">
-                                        <div class="strength-indicator" id="strengthIndicator">
-                                            <div class="strength-text" id="strengthText">Calculating...</div>
-                                            <div class="strength-description" id="strengthDescription">Please wait...</div>
+                                    
+                                    <div class="score-visualization">
+                                        <div class="score-circle-container">
+                                            <svg class="score-circle-svg" viewBox="0 0 120 120">
+                                                <defs>
+                                                    <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                                        <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+                                                        <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+                                                    </linearGradient>
+                                                </defs>
+                                                <circle class="score-bg" cx="60" cy="60" r="50"></circle>
+                                                <circle class="score-progress" id="scoreProgress" cx="60" cy="60" r="50"></circle>
+                                            </svg>
+                                            <div class="score-content">
+                                                <div class="score-value" id="scoreValue">0</div>
+                                                <div class="score-label">Security Score</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="score-breakdown">
+                                            <div class="breakdown-item">
+                                                <span class="breakdown-label">Strength Level:</span>
+                                                <span class="breakdown-value" id="strengthLevel">Calculating...</span>
+                                            </div>
+                                            <div class="breakdown-item">
+                                                <span class="breakdown-label">Risk Level:</span>
+                                                <span class="breakdown-value" id="riskLevel">Analyzing...</span>
+                                            </div>
+                                            <div class="breakdown-item">
+                                                <span class="breakdown-label">Recommendation:</span>
+                                                <span class="breakdown-value" id="recommendation">Processing...</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Cybersecurity Metrics -->
+                                <div class="cyber-metrics-grid">
+                                    <div class="metric-card entropy-card">
+                                        <div class="metric-header">
+                                            <i class="fas fa-random"></i>
+                                            <span>Entropy Analysis</span>
+                                        </div>
+                                        <div class="metric-body">
+                                            <div class="metric-value" id="entropyValue">0</div>
+                                            <div class="metric-unit">bits</div>
+                                            <div class="metric-bar">
+                                                <div class="metric-progress" id="entropyProgress"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="metric-card length-card">
+                                        <div class="metric-header">
+                                            <i class="fas fa-ruler-horizontal"></i>
+                                            <span>Length Analysis</span>
+                                        </div>
+                                        <div class="metric-body">
+                                            <div class="metric-value" id="lengthValue">0</div>
+                                            <div class="metric-unit">chars</div>
+                                            <div class="metric-bar">
+                                                <div class="metric-progress" id="lengthProgress"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="metric-card complexity-card">
+                                        <div class="metric-header">
+                                            <i class="fas fa-puzzle-piece"></i>
+                                            <span>Complexity Score</span>
+                                        </div>
+                                        <div class="metric-body">
+                                            <div class="metric-value" id="complexityValue">0</div>
+                                            <div class="metric-unit">%</div>
+                                            <div class="metric-bar">
+                                                <div class="metric-progress" id="complexityProgress"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="metric-card crack-time-card">
+                                        <div class="metric-header">
+                                            <i class="fas fa-stopwatch"></i>
+                                            <span>Crack Time</span>
+                                        </div>
+                                        <div class="metric-body">
+                                            <div class="metric-value crack-time" id="crackTimeValue">Calculating...</div>
+                                            <div class="metric-unit">estimated</div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Quick Metrics -->
-                            <div class="quick-metrics">
-                                <div class="metric-card">
-                                    <div class="metric-icon length">
-                                        <i class="fas fa-ruler-horizontal"></i>
+                            <!-- Right Panel: Threat Intelligence & Recommendations -->
+                            <div class="dashboard-right">
+                                
+                                <!-- Breach Intelligence Panel -->
+                                <div class="breach-intelligence-card">
+                                    <div class="card-header">
+                                        <div class="header-icon breach-icon" id="breachIcon">
+                                            <i class="fas fa-shield-alt"></i>
+                                        </div>
+                                        <div class="header-content">
+                                            <h3 id="breachTitle">Breach Intelligence</h3>
+                                            <p id="breachSubtitle">Checking against known data breaches...</p>
+                                        </div>
                                     </div>
-                                    <div class="metric-content">
-                                        <div class="metric-value" id="lengthValue">0</div>
-                                        <div class="metric-label">Characters</div>
+                                    
+                                    <div class="breach-status" id="breachStatus">
+                                        <div class="breach-indicator" id="breachIndicator">
+                                            <div class="indicator-pulse"></div>
+                                            <span class="indicator-text" id="breachText">Scanning...</span>
+                                        </div>
+                                        <div class="breach-count" id="breachCount" style="display: none;">
+                                            <span class="count-number" id="breachNumber">0</span>
+                                            <span class="count-label">breaches found</span>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="metric-card">
-                                    <div class="metric-icon entropy">
-                                        <i class="fas fa-random"></i>
+
+                                <!-- Character Composition Analysis -->
+                                <div class="composition-analysis-card">
+                                    <div class="card-header">
+                                        <div class="header-icon">
+                                            <i class="fas fa-dna"></i>
+                                        </div>
+                                        <div class="header-content">
+                                            <h3>Character Composition</h3>
+                                            <p>Password structure analysis</p>
+                                        </div>
                                     </div>
-                                    <div class="metric-content">
-                                        <div class="metric-value" id="entropyValue">0</div>
-                                        <div class="metric-label">Entropy (bits)</div>
+                                    
+                                    <div class="composition-grid">
+                                        <div class="composition-item" id="lowercaseComp">
+                                            <div class="comp-icon">
+                                                <i class="fas fa-font"></i>
+                                            </div>
+                                            <div class="comp-content">
+                                                <span class="comp-label">Lowercase</span>
+                                                <span class="comp-status" id="lowercaseStatus">❌</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="composition-item" id="uppercaseComp">
+                                            <div class="comp-icon">
+                                                <i class="fas fa-font"></i>
+                                            </div>
+                                            <div class="comp-content">
+                                                <span class="comp-label">Uppercase</span>
+                                                <span class="comp-status" id="uppercaseStatus">❌</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="composition-item" id="numbersComp">
+                                            <div class="comp-icon">
+                                                <i class="fas fa-hashtag"></i>
+                                            </div>
+                                            <div class="comp-content">
+                                                <span class="comp-label">Numbers</span>
+                                                <span class="comp-status" id="numbersStatus">❌</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="composition-item" id="symbolsComp">
+                                            <div class="comp-icon">
+                                                <i class="fas fa-asterisk"></i>
+                                            </div>
+                                            <div class="comp-content">
+                                                <span class="comp-label">Symbols</span>
+                                                <span class="comp-status" id="symbolsStatus">❌</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="metric-card">
-                                    <div class="metric-icon time">
-                                        <i class="fas fa-clock"></i>
+
+                                <!-- Security Recommendations -->
+                                <div class="recommendations-card">
+                                    <div class="card-header">
+                                        <div class="header-icon">
+                                            <i class="fas fa-lightbulb"></i>
+                                        </div>
+                                        <div class="header-content">
+                                            <h3>Security Recommendations</h3>
+                                            <p>Expert cybersecurity advice</p>
+                                        </div>
                                     </div>
-                                    <div class="metric-content">
-                                        <div class="metric-value" id="crackTimeValue">-</div>
-                                        <div class="metric-label">Crack Time</div>
+                                    
+                                    <div class="recommendations-list" id="recommendationsList">
+                                        <div class="recommendation-item loading">
+                                            <i class="fas fa-spinner fa-spin"></i>
+                                            <span>Analyzing password patterns...</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Breach Status Alert -->
-                        <div class="breach-alert" id="breachAlert">
-                            <div class="breach-content">
-                                <div class="breach-icon" id="breachIcon">
-                                    <i class="fas fa-shield-alt"></i>
-                                </div>
-                                <div class="breach-text">
-                                    <div class="breach-title" id="breachTitle">Checking breach databases...</div>
-                                    <div class="breach-subtitle" id="breachSubtitle">Please wait...</div>
-                                </div>
-                            </div>
-                            <div class="breach-action" id="breachAction" style="display: none;">
-                                <button class="action-btn">Learn More</button>
-                            </div>
-                        </div>
-
-                        <!-- Detailed Analysis Grid -->
-                        <div class="analysis-grid">
-                            <!-- Character Composition -->
-                            <div class="analysis-card">
-                                <div class="card-header">
-                                    <i class="fas fa-font"></i>
-                                    <h4>Character Composition</h4>
-                                </div>
-                                <div class="character-analysis">
-                                    <div class="char-type" data-type="lowercase">
-                                        <div class="char-icon"><i class="fas fa-font"></i></div>
-                                        <div class="char-details">
-                                            <span class="char-label">Lowercase Letters</span>
-                                            <div class="char-indicator" id="lowercaseIndicator"></div>
-                                        </div>
-                                    </div>
-                                    <div class="char-type" data-type="uppercase">
-                                        <div class="char-icon"><i class="fas fa-font"></i></div>
-                                        <div class="char-details">
-                                            <span class="char-label">Uppercase Letters</span>
-                                            <div class="char-indicator" id="uppercaseIndicator"></div>
-                                        </div>
-                                    </div>
-                                    <div class="char-type" data-type="digits">
-                                        <div class="char-icon"><i class="fas fa-hashtag"></i></div>
-                                        <div class="char-details">
-                                            <span class="char-label">Numbers</span>
-                                            <div class="char-indicator" id="digitIndicator"></div>
-                                        </div>
-                                    </div>
-                                    <div class="char-type" data-type="symbols">
-                                        <div class="char-icon"><i class="fas fa-at"></i></div>
-                                        <div class="char-details">
-                                            <span class="char-label">Special Symbols</span>
-                                            <div class="char-indicator" id="symbolIndicator"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Security Recommendations -->
-                            <div class="analysis-card">
-                                <div class="card-header">
-                                    <i class="fas fa-lightbulb"></i>
-                                    <h4>Security Recommendations</h4>
-                                </div>
-                                <div class="recommendations" id="recommendations">
-                                    <div class="recommendation-list" id="recommendationList">
-                                        <!-- Recommendations will be populated by JavaScript -->
-                                    </div>
-                                </div>
-                            </div>
+                        <!-- Action Buttons -->
+                        <div class="analysis-actions">
+                            <button class="action-btn primary" id="generateStrongerBtn">
+                                <i class="fas fa-sync-alt"></i>
+                                Generate Stronger Password
+                            </button>
+                            <button class="action-btn secondary" id="analyzeAnotherBtn">
+                                <i class="fas fa-search"></i>
+                                Analyze Another Password
+                            </button>
+                            <button class="action-btn tertiary" id="exportReportBtn">
+                                <i class="fas fa-download"></i>
+                                Export Security Report
+                            </button>
                         </div>
                     </div>
                 </section>
@@ -335,169 +454,6 @@
             <div class="footer-bottom">
                 <p>&copy; 2025 PassGuardian Enterprise Security Platform. Built with ❤️ for better cybersecurity.</p>
             </div>
-        </footer>
-    </div>
-
-    <script src="script.js"></script>
-</body>
-</html>
-
-            <!-- Loading Section -->
-            <section class="loading-section" id="loadingSection" style="display: none;">
-                <div class="loading-container">
-                    <div class="loading-spinner"></div>
-                    <p class="loading-text">Analyzing password security...</p>
-                    <div class="loading-steps">
-                        <div class="step active" data-step="1">
-                            <i class="fas fa-ruler"></i>
-                            <span>Checking length & complexity</span>
-                        </div>
-                        <div class="step" data-step="2">
-                            <i class="fas fa-calculator"></i>
-                            <span>Calculating entropy</span>
-                        </div>
-                        <div class="step" data-step="3">
-                            <i class="fas fa-database"></i>
-                            <span>Scanning breach databases</span>
-                        </div>
-                        <div class="step" data-step="4">
-                            <i class="fas fa-clock"></i>
-                            <span>Estimating crack time</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Error Section -->
-            <section class="error-section" id="errorSection" style="display: none;">
-                <div class="error-container">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <h3>Analysis Failed</h3>
-                    <p id="errorMessage">Something went wrong. Please try again.</p>
-                    <button id="retryBtn" class="retry-btn">
-                        <i class="fas fa-redo"></i>
-                        Try Again
-                    </button>
-                </div>
-            </section>
-
-            <!-- Results Section -->
-            <section class="results-section" id="resultsSection" style="display: none;">
-                <div class="results-container">
-                    <div class="results-header">
-                        <i class="fas fa-chart-line"></i>
-                        <h2>Security Analysis Results</h2>
-                    </div>
-
-                    <!-- Overall Score -->
-                    <div class="overall-score" id="overallScore">
-                        <div class="score-circle">
-                            <div class="score-value" id="scoreValue">0</div>
-                            <div class="score-label">Security Score</div>
-                        </div>
-                        <div class="strength-indicator" id="strengthIndicator">
-                            <div class="strength-text" id="strengthText">Calculating...</div>
-                            <div class="strength-bar">
-                                <div class="strength-fill" id="strengthFill"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Detailed Metrics -->
-                    <div class="metrics-grid">
-                        <div class="metric-card">
-                            <div class="metric-icon">
-                                <i class="fas fa-ruler-horizontal"></i>
-                            </div>
-                            <div class="metric-content">
-                                <div class="metric-value" id="lengthValue">0</div>
-                                <div class="metric-label">Characters</div>
-                            </div>
-                        </div>
-
-                        <div class="metric-card">
-                            <div class="metric-icon">
-                                <i class="fas fa-random"></i>
-                            </div>
-                            <div class="metric-content">
-                                <div class="metric-value" id="entropyValue">0</div>
-                                <div class="metric-label">Entropy (bits)</div>
-                            </div>
-                        </div>
-
-                        <div class="metric-card">
-                            <div class="metric-icon">
-                                <i class="fas fa-clock"></i>
-                            </div>
-                            <div class="metric-content">
-                                <div class="metric-value" id="crackTimeValue">-</div>
-                                <div class="metric-label">Crack Time</div>
-                            </div>
-                        </div>
-
-                        <div class="metric-card">
-                            <div class="metric-icon">
-                                <i class="fas fa-palette"></i>
-                            </div>
-                            <div class="metric-content">
-                                <div class="metric-value" id="diversityValue">0</div>
-                                <div class="metric-label">Character Types</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Breach Status -->
-                    <div class="breach-status" id="breachStatus">
-                        <div class="breach-icon" id="breachIcon">
-                            <i class="fas fa-shield-alt"></i>
-                        </div>
-                        <div class="breach-content">
-                            <div class="breach-title" id="breachTitle">Checking breach databases...</div>
-                            <div class="breach-subtitle" id="breachSubtitle">Please wait...</div>
-                        </div>
-                    </div>
-
-                    <!-- Character Analysis -->
-                    <div class="character-analysis">
-                        <h3><i class="fas fa-microscope"></i> Character Analysis</h3>
-                        <div class="character-types" id="characterTypes">
-                            <div class="char-type" data-type="lowercase">
-                                <i class="fas fa-a"></i>
-                                <span>Lowercase</span>
-                                <div class="char-indicator" id="lowercaseIndicator"></div>
-                            </div>
-                            <div class="char-type" data-type="uppercase">
-                                <i class="fas fa-font"></i>
-                                <span>Uppercase</span>
-                                <div class="char-indicator" id="uppercaseIndicator"></div>
-                            </div>
-                            <div class="char-type" data-type="digits">
-                                <i class="fas fa-hashtag"></i>
-                                <span>Numbers</span>
-                                <div class="char-indicator" id="digitIndicator"></div>
-                            </div>
-                            <div class="char-type" data-type="symbols">
-                                <i class="fas fa-at"></i>
-                                <span>Symbols</span>
-                                <div class="char-indicator" id="symbolIndicator"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Recommendations -->
-                    <div class="recommendations" id="recommendations">
-                        <h3><i class="fas fa-lightbulb"></i> Security Recommendations</h3>
-                        <div class="recommendation-list" id="recommendationList">
-                            <!-- Recommendations will be populated by JavaScript -->
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <!-- Footer -->
-        <footer class="footer">
-            <p>&copy; 2025 PassGuardian. Built with ❤️ for better security.</p>
         </footer>
     </div>
 

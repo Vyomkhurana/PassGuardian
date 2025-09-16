@@ -1,5 +1,32 @@
 {
+  "name": "passguardian",
+  "version": "1.0.0",
+  "description": "Enterprise Password Security Dashboard",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "concurrently --names \"🐍PY,🟢NODE,🌐WEB\" --prefix-colors \"green,blue,cyan\" \"npm run python\" \"npm run backend\" \"npm run frontend\"",
+    "python": "cd python-service && python -m uvicorn app:app --host 127.0.0.1 --port 8001 --reload",
+    "backend": "cd backend && node server.js",
+    "frontend": "cd frontend && npx http-server -p 3000 -c-1 --cors",
+    "dev": "npm run start",
+    "stop": "taskkill /f /im python.exe /im node.exe 2>nul || echo Services stopped",
+    "clean": "npm run stop && echo Cleaning up...",
+    "open": "start http://localhost:3000",
+    "logs": "echo Check individual service logs in their respective terminal windows"
+  },
   "devDependencies": {
-    "concurrently": "^9.2.1"
-  }
+    "concurrently": "^9.2.1",
+    "http-server": "^14.1.1"
+  },
+  "dependencies": {
+    "axios": "^1.12.2"
+  },
+  "keywords": [
+    "password",
+    "security",
+    "dashboard",
+    "enterprise"
+  ],
+  "author": "Vyomkhurana",
+  "license": "MIT"
 }
