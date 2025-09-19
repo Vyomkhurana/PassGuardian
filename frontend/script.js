@@ -266,10 +266,36 @@
         }
 
         if (scoreValue) {
-            // Calculate a score out of 100 based on entropy and other factors
-            let score = Math.min(100, Math.floor((data.entropy || 0) * 2));
-            if (data.strength === 'compromised') score = 0;
-            scoreValue.textContent = score;
+            // Calculate a comprehensive score out of 100
+            let score = 0;
+            
+            if (data.strength === 'compromised') {
+                score = 0;
+            } else {
+                // Base score from entropy (0-50 points)
+                score += Math.min(50, Math.floor((data.entropy || 0) * 1.2));
+                
+                // Character diversity bonus (0-20 points)
+                score += (data.diversity_score || 0) * 5;
+                
+                // Length bonus (0-20 points)
+                score += Math.min(20, Math.floor((data.length || 0) * 1.5));
+                
+                // Breach penalty
+                if (data.pwned_count && data.pwned_count > 0) {
+                    score = Math.max(0, score - 30);
+                }
+                
+                // Dictionary word penalty
+                if (data.dictionary_word) {
+                    score = Math.max(0, score - 15);
+                }
+                
+                // Cap at 100
+                score = Math.min(100, score);
+            }
+            
+            scoreValue.textContent = Math.round(score);
         }
     }
 
@@ -287,18 +313,19 @@
             }
         }
 
-        // Update character type indicators
+        // Update character type indicators with correct IDs
         const indicators = [
-            { id: 'lowercase-indicator', has: data.has_lower },
-            { id: 'uppercase-indicator', has: data.has_upper },
-            { id: 'numbers-indicator', has: data.has_digit },
-            { id: 'symbols-indicator', has: data.has_symbol }
+            { id: 'lowercaseStatus', has: data.has_lower },
+            { id: 'uppercaseStatus', has: data.has_upper },
+            { id: 'numbersStatus', has: data.has_digit },
+            { id: 'symbolsStatus', has: data.has_symbol }
         ];
 
         indicators.forEach(indicator => {
             const element = document.getElementById(indicator.id);
             if (element) {
-                element.className = indicator.has ? 'indicator present' : 'indicator missing';
+                element.textContent = indicator.has ? '✅' : '❌';
+                element.style.color = indicator.has ? '#00ff7f' : '#ff4757';
             }
         });
     }
@@ -306,22 +333,52 @@
     updateBreachInfo(data) {
         const breachTitle = document.getElementById('breachTitle');
         const breachSubtitle = document.getElementById('breachSubtitle');
+        const breachIndicator = document.getElementById('breachIndicator');
+        const breachText = document.getElementById('breachText');
+        const breachCount = document.getElementById('breachCount');
+        const breachNumber = document.getElementById('breachNumber');
 
         if (breachTitle && breachSubtitle) {
             if (data.pwned_count !== undefined && data.pwned_count !== null) {
+                // Hide the scanning indicator
+                if (breachIndicator) {
+                    breachIndicator.style.display = 'none';
+                }
+                
                 if (data.pwned_count > 0) {
                     breachTitle.textContent = 'Password Compromised';
                     breachSubtitle.textContent = `Found in ${data.pwned_count.toLocaleString()} data breaches`;
                     breachTitle.className = 'breach-title compromised';
+                    
+                    // Show breach count
+                    if (breachCount && breachNumber) {
+                        breachNumber.textContent = data.pwned_count.toLocaleString();
+                        breachCount.style.display = 'block';
+                    }
                 } else {
                     breachTitle.textContent = 'No Breaches Detected';
                     breachSubtitle.textContent = 'Password not found in known data breaches';
                     breachTitle.className = 'breach-title safe';
+                    
+                    // Show zero count
+                    if (breachCount && breachNumber) {
+                        breachNumber.textContent = '0';
+                        breachCount.style.display = 'block';
+                    }
                 }
             } else {
+                // Hide scanning indicator and show error
+                if (breachIndicator) {
+                    breachIndicator.style.display = 'none';
+                }
+                
                 breachTitle.textContent = 'Breach Check Failed';
                 breachSubtitle.textContent = 'Unable to verify against breach databases';
                 breachTitle.className = 'breach-title unknown';
+                
+                if (breachCount) {
+                    breachCount.style.display = 'none';
+                }
             }
         }
     }
@@ -329,25 +386,57 @@
     updateRecommendations(data) {
         const recommendation = document.getElementById('recommendation');
         const riskLevel = document.getElementById('riskLevel');
+        const recommendationsList = document.getElementById('recommendationsList');
 
         let recommendationText = '';
         let risk = 'unknown';
+        let recommendations = [];
 
         if (data.strength === 'compromised') {
             recommendationText = 'Change this password immediately! It has been found in data breaches.';
             risk = 'critical';
+            recommendations = [
+                { icon: 'fas fa-exclamation-triangle', text: 'Change this password immediately', critical: true },
+                { icon: 'fas fa-shield-alt', text: 'Use a unique password not found in breaches', critical: true },
+                { icon: 'fas fa-key', text: 'Enable two-factor authentication', critical: false },
+                { icon: 'fas fa-lock', text: 'Consider using a password manager', critical: false }
+            ];
         } else if (data.strength === 'weak') {
             recommendationText = 'Use a longer password with mixed characters, numbers, and symbols.';
             risk = 'high';
+            recommendations = [
+                { icon: 'fas fa-ruler', text: `Increase length to at least 12 characters (current: ${data.length})`, critical: true },
+                { icon: 'fas fa-font', text: !data.has_upper ? 'Add uppercase letters (A-Z)' : 'Good: Contains uppercase letters', critical: !data.has_upper },
+                { icon: 'fas fa-hashtag', text: !data.has_digit ? 'Add numbers (0-9)' : 'Good: Contains numbers', critical: !data.has_digit },
+                { icon: 'fas fa-asterisk', text: !data.has_symbol ? 'Add symbols (!@#$%^&*)' : 'Good: Contains symbols', critical: !data.has_symbol }
+            ];
         } else if (data.strength === 'medium') {
             recommendationText = 'Consider adding more complexity or length for better security.';
             risk = 'medium';
+            recommendations = [
+                { icon: 'fas fa-plus', text: 'Consider increasing length for better security', critical: false },
+                { icon: 'fas fa-random', text: 'Avoid predictable patterns or dictionary words', critical: data.dictionary_word },
+                { icon: 'fas fa-shield-alt', text: 'Good entropy level for basic protection', critical: false },
+                { icon: 'fas fa-key', text: 'Enable two-factor authentication for added security', critical: false }
+            ];
         } else if (data.strength === 'strong') {
             recommendationText = 'Good password! Consider adding more length for even better security.';
             risk = 'low';
+            recommendations = [
+                { icon: 'fas fa-check-circle', text: 'Strong password with good complexity', critical: false },
+                { icon: 'fas fa-plus', text: 'Consider increasing length to 16+ characters', critical: false },
+                { icon: 'fas fa-shield-alt', text: 'Not found in known data breaches', critical: false },
+                { icon: 'fas fa-lock', text: 'Consider using a password manager', critical: false }
+            ];
         } else if (data.strength === 'very_strong') {
             recommendationText = 'Excellent password! This provides strong protection.';
             risk = 'very_low';
+            recommendations = [
+                { icon: 'fas fa-trophy', text: 'Excellent password strength achieved', critical: false },
+                { icon: 'fas fa-shield-alt', text: 'Strong protection against brute force attacks', critical: false },
+                { icon: 'fas fa-check-double', text: 'Not found in known data breaches', critical: false },
+                { icon: 'fas fa-star', text: 'Keep using unique passwords like this', critical: false }
+            ];
         }
 
         if (recommendation) {
@@ -357,6 +446,20 @@
         if (riskLevel) {
             riskLevel.textContent = risk.replace('_', ' ');
             riskLevel.className = `risk-badge ${risk}`;
+        }
+
+        // Update recommendations list
+        if (recommendationsList) {
+            recommendationsList.innerHTML = '';
+            recommendations.forEach(rec => {
+                const item = document.createElement('div');
+                item.className = `recommendation-item ${rec.critical ? 'critical' : 'good'}`;
+                item.innerHTML = `
+                    <i class="${rec.icon}"></i>
+                    <span>${rec.text}</span>
+                `;
+                recommendationsList.appendChild(item);
+            });
         }
     }
 

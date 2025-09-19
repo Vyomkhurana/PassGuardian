@@ -180,3 +180,7 @@ def analyze_password(password: str):
             "crack_time_years": 0,
             "strength": "unknown"
         }
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8001)
