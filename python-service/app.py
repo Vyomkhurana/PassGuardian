@@ -1,26 +1,16 @@
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import math, re, hashlib, requests
 
 # Initialize FastAPI app
 app = FastAPI()
 
-# Add CORS middleware
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["http://localhost:5000", "http://127.0.0.1:5000"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
 # Sample weak password list (can expand later)
 COMMON_WEAK = ["password", "123456", "qwerty", "admin", "letmein"]
 
 @app.get("/")
 def root():
-    return {"message": "PassGuardian Python service running 🚀"}
+    return {"message": "PassGuardian Python service running"}
 
 @app.post("/analyze-password/")
 def analyze_password(password: str):
@@ -180,7 +170,3 @@ def analyze_password(password: str):
             "crack_time_years": 0,
             "strength": "unknown"
         }
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8001)

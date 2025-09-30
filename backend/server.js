@@ -22,7 +22,7 @@ app.get("/", (req, res) => {
 app.get("/health", (req, res) => {
   res.json({ 
     status: "healthy",
-    message: "PassGuardian backend running 🚀",
+    message: "PassGuardian backend running",
     timestamp: new Date().toISOString()
   });
 });

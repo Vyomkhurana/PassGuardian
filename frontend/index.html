@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🔐 PassGuardian - Enterprise Password Security Dashboard</title>
+    <title>PassGuardian - Enterprise Password Security Dashboard</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -47,6 +47,14 @@
                         <div class="stat-label">Avg Strength</div>
                     </div>
                 </div>
+                <div class="header-controls">
+                    <button id="themeToggle" class="theme-toggle" title="Toggle Dark/Light Mode">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button id="historyToggle" class="history-toggle" title="View Analysis History">
+                        <i class="fas fa-history"></i>
+                    </button>
+                </div>
             </div>
         </header>
 
@@ -56,7 +64,7 @@
                 <!-- Welcome Section -->
                 <section class="welcome-section">
                     <div class="welcome-content">
-                        <h2>🛡️ Advanced Password Security Analysis</h2>
+                        <h2>Advanced Password Security Analysis</h2>
                         <p>Analyze your passwords against millions of known breaches, calculate entropy, and get actionable security recommendations. Our enterprise-grade security platform helps protect your digital identity.</p>
                     </div>
                     <div class="security-badges">
@@ -96,8 +104,77 @@
                                 <button type="button" id="togglePassword" class="toggle-password">
                                     <i class="fas fa-eye"></i>
                                 </button>
+                                <div class="strength-meter" id="strengthMeter">
+                                    <div class="strength-bar" id="strengthBar"></div>
+                                </div>
+                                <div class="strength-label" id="strengthLabel">Enter password</div>
                             </div>
-                            <button id="analyzeBtn" class="analyze-btn">
+                            <div class="action-buttons">
+                                <button id="analyzeBtn" class="analyze-btn">
+                                    <i class="fas fa-search"></i>
+                                    <span class="btn-text">Analyze Password</span>
+                                    <div class="btn-loading">
+                                        <i class="fas fa-spinner fa-spin"></i>
+                                    </div>
+                                </button>
+                                <button id="generateBtn" class="generate-btn">
+                                    <i class="fas fa-magic"></i>
+                                    <span>Generate Secure Password</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Password Generator Panel -->
+                        <div class="generator-panel" id="generatorPanel">
+                            <div class="generator-header">
+                                <h4><i class="fas fa-magic"></i> Password Generator</h4>
+                                <button id="closeGenerator" class="close-btn">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <div class="generator-options">
+                                <div class="option-group">
+                                    <label>Length: <span id="lengthValue">16</span></label>
+                                    <input type="range" id="lengthSlider" min="8" max="64" value="16" class="slider">
+                                </div>
+                                <div class="option-group">
+                                    <div class="checkboxes">
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" id="includeUppercase" checked>
+                                            <span class="checkmark"></span>
+                                            Uppercase (A-Z)
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" id="includeLowercase" checked>
+                                            <span class="checkmark"></span>
+                                            Lowercase (a-z)
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" id="includeNumbers" checked>
+                                            <span class="checkmark"></span>
+                                            Numbers (0-9)
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" id="includeSymbols" checked>
+                                            <span class="checkmark"></span>
+                                            Symbols (!@#$%)
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="generated-password">
+                                    <input type="text" id="generatedPassword" readonly>
+                                    <button id="copyPassword" class="copy-btn" title="Copy to clipboard">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                    <button id="refreshPassword" class="refresh-btn" title="Generate new password">
+                                        <i class="fas fa-refresh"></i>
+                                    </button>
+                                </div>
+                                <button id="useGenerated" class="use-btn">
+                                    <i class="fas fa-arrow-left"></i>
+                                    Use This Password
+                                </button>
+                            </div>
                                 <i class="fas fa-shield-alt"></i>
                                 <span>Analyze Security</span>
                                 <div class="button-loader"></div>
@@ -423,8 +500,85 @@
                         </div>
                     </div>
                 </section>
+
+                <!-- Security Tips Section -->
+                <section class="security-tips-section">
+                    <div class="tips-header">
+                        <h3><i class="fas fa-lightbulb"></i> Pro Security Tips</h3>
+                        <p>Expert recommendations to enhance your digital security</p>
+                    </div>
+                    <div class="tips-grid">
+                        <div class="tip-card">
+                            <div class="tip-icon">
+                                <i class="fas fa-key"></i>
+                            </div>
+                            <h4>Use Unique Passwords</h4>
+                            <p>Never reuse passwords across multiple accounts. Each service should have its own unique, strong password.</p>
+                        </div>
+                        <div class="tip-card">
+                            <div class="tip-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <h4>Enable 2FA</h4>
+                            <p>Add an extra layer of security with two-factor authentication on all important accounts.</p>
+                        </div>
+                        <div class="tip-card">
+                            <div class="tip-icon">
+                                <i class="fas fa-sync-alt"></i>
+                            </div>
+                            <h4>Regular Updates</h4>
+                            <p>Change passwords regularly, especially if they appear in data breaches or security incidents.</p>
+                        </div>
+                        <div class="tip-card">
+                            <div class="tip-icon">
+                                <i class="fas fa-user-secret"></i>
+                            </div>
+                            <h4>Use Password Manager</h4>
+                            <p>Consider using a reputable password manager to generate and store complex passwords securely.</p>
+                        </div>
+                    </div>
+                </section>
             </div>
         </main>
+
+        <!-- History Panel -->
+        <div class="history-panel" id="historyPanel">
+            <div class="history-header">
+                <h3><i class="fas fa-history"></i> Analysis History</h3>
+                <button id="closeHistory" class="close-btn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="history-content">
+                <div class="history-stats">
+                    <div class="history-stat">
+                        <span class="stat-number" id="historyTotal">0</span>
+                        <span class="stat-text">Total Analyses</span>
+                    </div>
+                    <div class="history-stat">
+                        <span class="stat-number" id="historyBreaches">0</span>
+                        <span class="stat-text">Compromised</span>
+                    </div>
+                    <div class="history-stat">
+                        <span class="stat-number" id="historyStrong">0</span>
+                        <span class="stat-text">Strong Passwords</span>
+                    </div>
+                </div>
+                <div class="history-list" id="historyList">
+                    <div class="empty-history">
+                        <i class="fas fa-clock"></i>
+                        <p>No analysis history yet. Start analyzing passwords to see your security timeline.</p>
+                    </div>
+                </div>
+                <button id="clearHistory" class="clear-history-btn">
+                    <i class="fas fa-trash"></i>
+                    Clear History
+                </button>
+            </div>
+        </div>
+
+        <!-- Toast Notifications -->
+        <div class="toast-container" id="toastContainer"></div>
 
         <!-- Footer -->
         <footer class="dashboard-footer">
