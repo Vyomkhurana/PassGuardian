@@ -62,7 +62,14 @@
         // Generator button
         const generateBtn = document.getElementById("generateBtn");
         if (generateBtn) {
-            generateBtn.addEventListener("click", () => this.toggleGenerator());
+            console.log('Generator button found, binding click event');
+            generateBtn.addEventListener("click", (e) => {
+                e.preventDefault();
+                console.log('Generate button clicked!');
+                this.toggleGenerator();
+            });
+        } else {
+            console.error('Generate button not found!');
         }
 
         // Generator panel events
@@ -112,8 +119,11 @@
             useGenerated.addEventListener("click", () => this.useGeneratedPassword());
         }
 
-        // Generate initial password
-        setTimeout(() => this.generatePassword(), 100);
+        // Generate initial password after DOM is ready
+        setTimeout(() => {
+            console.log('Attempting to generate initial password');
+            this.generatePassword();
+        }, 500);
     }
 
     bindHistoryEvents() {
@@ -201,12 +211,18 @@
 
     // Password Generator
     toggleGenerator() {
+        console.log('Toggle generator clicked');
         const panel = document.getElementById('generatorPanel');
         const overlay = this.getOrCreateOverlay();
         
         if (panel) {
+            console.log('Panel found, adding active class');
             panel.classList.add('active');
             overlay.classList.add('active');
+            // Generate initial password when opening
+            this.generatePassword();
+        } else {
+            console.error('Generator panel not found');
         }
     }
 
@@ -219,17 +235,22 @@
     }
 
     generatePassword() {
+        console.log('Generating password...');
         const length = parseInt(document.getElementById('lengthSlider')?.value || 16);
         const includeUpper = document.getElementById('includeUppercase')?.checked;
         const includeLower = document.getElementById('includeLowercase')?.checked;
         const includeNumbers = document.getElementById('includeNumbers')?.checked;
         const includeSymbols = document.getElementById('includeSymbols')?.checked;
 
+        console.log('Generator settings:', { length, includeUpper, includeLower, includeNumbers, includeSymbols });
+
         let charset = '';
         if (includeUpper) charset += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         if (includeLower) charset += 'abcdefghijklmnopqrstuvwxyz';
         if (includeNumbers) charset += '0123456789';
         if (includeSymbols) charset += '!@#$%^&*()_+-=[]{}|;:,.<>?';
+
+        console.log('Charset:', charset);
 
         if (charset === '') {
             this.showToast('Please select at least one character type', 'error');
@@ -241,18 +262,33 @@
             password += charset.charAt(Math.floor(Math.random() * charset.length));
         }
 
+        console.log('Generated password:', password);
+
         const generatedInput = document.getElementById('generatedPassword');
         if (generatedInput) {
             generatedInput.value = password;
+            console.log('Password set in input field');
+        } else {
+            console.error('Generated password input field not found');
         }
     }
 
-    copyToClipboard() {
+    async copyToClipboard() {
         const generatedInput = document.getElementById('generatedPassword');
-        if (generatedInput) {
-            generatedInput.select();
-            document.execCommand('copy');
-            this.showToast('Password copied to clipboard!', 'success');
+        if (generatedInput && generatedInput.value) {
+            try {
+                if (navigator.clipboard) {
+                    await navigator.clipboard.writeText(generatedInput.value);
+                } else {
+                    // Fallback for older browsers
+                    generatedInput.select();
+                    document.execCommand('copy');
+                }
+                this.showToast('Password copied to clipboard!', 'success');
+            } catch (error) {
+                console.error('Failed to copy password:', error);
+                this.showToast('Failed to copy password', 'error');
+            }
         }
     }
 
