@@ -96,10 +96,27 @@
         }
 
         // Checkbox changes
-        ["includeUppercase", "includeLowercase", "includeNumbers", "includeSymbols"].forEach(id => {
+        ["includeUppercase", "includeLowercase", "includeNumbers", "includeSymbols", "excludeSimilar", "excludeAmbiguous"].forEach(id => {
             const checkbox = document.getElementById(id);
             if (checkbox) {
                 checkbox.addEventListener("change", () => this.generatePassword());
+            }
+        });
+
+        // Passphrase options
+        const wordCountSlider = document.getElementById("wordCountSlider");
+        const wordCountValue = document.getElementById("wordCountValue");
+        if (wordCountSlider && wordCountValue) {
+            wordCountSlider.addEventListener("input", (e) => {
+                wordCountValue.textContent = e.target.value;
+                this.generatePassphrase();
+            });
+        }
+
+        ["capitalizeWords", "addNumbers", "addSeparators"].forEach(id => {
+            const checkbox = document.getElementById(id);
+            if (checkbox) {
+                checkbox.addEventListener("change", () => this.generatePassphrase());
             }
         });
 
@@ -118,6 +135,14 @@
         if (useGenerated) {
             useGenerated.addEventListener("click", () => this.useGeneratedPassword());
         }
+
+        // Template buttons
+        document.querySelectorAll('.template-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const template = e.target.closest('.template-btn').dataset.template;
+                this.applyPasswordTemplate(template);
+            });
+        });
 
         // Generate initial password after DOM is ready
         setTimeout(() => {
@@ -235,42 +260,263 @@
     }
 
     generatePassword() {
-        console.log('Generating password...');
+        console.log('Generating enhanced password...');
         const length = parseInt(document.getElementById('lengthSlider')?.value || 16);
         const includeUpper = document.getElementById('includeUppercase')?.checked;
         const includeLower = document.getElementById('includeLowercase')?.checked;
         const includeNumbers = document.getElementById('includeNumbers')?.checked;
         const includeSymbols = document.getElementById('includeSymbols')?.checked;
+        const excludeSimilar = document.getElementById('excludeSimilar')?.checked || false;
+        const excludeAmbiguous = document.getElementById('excludeAmbiguous')?.checked || false;
 
-        console.log('Generator settings:', { length, includeUpper, includeLower, includeNumbers, includeSymbols });
+        console.log('Generator settings:', { length, includeUpper, includeLower, includeNumbers, includeSymbols, excludeSimilar, excludeAmbiguous });
 
-        let charset = '';
-        if (includeUpper) charset += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        if (includeLower) charset += 'abcdefghijklmnopqrstuvwxyz';
-        if (includeNumbers) charset += '0123456789';
-        if (includeSymbols) charset += '!@#$%^&*()_+-=[]{}|;:,.<>?';
+        // Enhanced character sets
+        let upperCase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        let lowerCase = 'abcdefghijklmnopqrstuvwxyz';
+        let numbers = '0123456789';
+        let symbols = '!@#$%^&*()_+-=[]{}|;:,.<>?';
 
-        console.log('Charset:', charset);
+        // Remove similar looking characters if requested
+        if (excludeSimilar) {
+            upperCase = upperCase.replace(/[O0]/g, '');
+            lowerCase = lowerCase.replace(/[l1]/g, '');
+            numbers = numbers.replace(/[0]/g, '');
+        }
 
-        if (charset === '') {
+        // Remove ambiguous characters if requested
+        if (excludeAmbiguous) {
+            symbols = symbols.replace(/[{}[\]()\/\\'"~,;.<>]/g, '');
+        }
+
+        // Build character pools
+        const charPools = [];
+        if (includeUpper) charPools.push(upperCase);
+        if (includeLower) charPools.push(lowerCase);
+        if (includeNumbers) charPools.push(numbers);
+        if (includeSymbols) charPools.push(symbols);
+
+        if (charPools.length === 0) {
             this.showToast('Please select at least one character type', 'error');
             return;
         }
 
+        // Generate password using cryptographically secure method
         let password = '';
-        for (let i = 0; i < length; i++) {
-            password += charset.charAt(Math.floor(Math.random() * charset.length));
+        
+        // Ensure at least one character from each selected pool (for stronger passwords)
+        const guaranteedChars = [];
+        charPools.forEach(pool => {
+            if (pool.length > 0) {
+                guaranteedChars.push(this.getSecureRandomChar(pool));
+            }
+        });
+
+        // Fill remaining length with random characters from all pools
+        const allChars = charPools.join('');
+        for (let i = guaranteedChars.length; i < length; i++) {
+            guaranteedChars.push(this.getSecureRandomChar(allChars));
         }
 
-        console.log('Generated password:', password);
+        // Shuffle the password using Fisher-Yates algorithm for better randomness
+        password = this.shuffleArray(guaranteedChars).join('');
+
+        console.log('Generated enhanced password with entropy:', this.calculatePasswordEntropy(password));
 
         const generatedInput = document.getElementById('generatedPassword');
         if (generatedInput) {
             generatedInput.value = password;
-            console.log('Password set in input field');
+            
+            // Show password strength
+            this.updateGeneratedPasswordStrength(password);
+            console.log('Enhanced password set in input field');
         } else {
             console.error('Generated password input field not found');
         }
+    }
+
+    // Cryptographically secure random character selection
+    getSecureRandomChar(charset) {
+        if (window.crypto && window.crypto.getRandomValues) {
+            const array = new Uint32Array(1);
+            window.crypto.getRandomValues(array);
+            return charset[array[0] % charset.length];
+        } else {
+            // Fallback to Math.random for older browsers
+            return charset[Math.floor(Math.random() * charset.length)];
+        }
+    }
+
+    // Fisher-Yates shuffle algorithm for better randomness
+    shuffleArray(array) {
+        const shuffled = [...array];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        return shuffled;
+    }
+
+    // Calculate password entropy
+    calculatePasswordEntropy(password) {
+        const length = password.length;
+        let charsetSize = 0;
+        
+        if (/[a-z]/.test(password)) charsetSize += 26;
+        if (/[A-Z]/.test(password)) charsetSize += 26;
+        if (/[0-9]/.test(password)) charsetSize += 10;
+        if (/[^a-zA-Z0-9]/.test(password)) charsetSize += 32;
+        
+        return length * Math.log2(charsetSize);
+    }
+
+    // Update generated password strength indicator
+    updateGeneratedPasswordStrength(password) {
+        const strengthIndicator = document.getElementById('generatedStrength');
+        if (!strengthIndicator) return;
+
+        const entropy = this.calculatePasswordEntropy(password);
+        let strengthClass = 'weak';
+        let strengthText = 'Weak';
+
+        if (entropy >= 60) {
+            strengthClass = 'very-strong';
+            strengthText = 'Very Strong';
+        } else if (entropy >= 45) {
+            strengthClass = 'strong';
+            strengthText = 'Strong';
+        } else if (entropy >= 30) {
+            strengthClass = 'medium';
+            strengthText = 'Medium';
+        }
+
+        strengthIndicator.className = `strength-indicator ${strengthClass}`;
+        strengthIndicator.textContent = `${strengthText} (${Math.round(entropy)} bits)`;
+    }
+
+    // Apply password generation templates
+    applyPasswordTemplate(template) {
+        const templates = {
+            strong: {
+                length: 16,
+                includeUpper: true,
+                includeLower: true,
+                includeNumbers: true,
+                includeSymbols: true,
+                excludeSimilar: false,
+                excludeAmbiguous: false
+            },
+            enterprise: {
+                length: 20,
+                includeUpper: true,
+                includeLower: true,
+                includeNumbers: true,
+                includeSymbols: true,
+                excludeSimilar: true,
+                excludeAmbiguous: true
+            },
+            memorable: {
+                length: 12,
+                includeUpper: true,
+                includeLower: true,
+                includeNumbers: true,
+                includeSymbols: false,
+                excludeSimilar: true,
+                excludeAmbiguous: true
+            },
+            maximum: {
+                length: 32,
+                includeUpper: true,
+                includeLower: true,
+                includeNumbers: true,
+                includeSymbols: true,
+                excludeSimilar: false,
+                excludeAmbiguous: false
+            }
+        };
+
+        const config = templates[template];
+        if (!config) return;
+
+        // Apply template settings to UI
+        document.getElementById('lengthSlider').value = config.length;
+        document.getElementById('lengthValue').textContent = config.length;
+        document.getElementById('includeUppercase').checked = config.includeUpper;
+        document.getElementById('includeLowercase').checked = config.includeLower;
+        document.getElementById('includeNumbers').checked = config.includeNumbers;
+        document.getElementById('includeSymbols').checked = config.includeSymbols;
+        
+        if (document.getElementById('excludeSimilar')) {
+            document.getElementById('excludeSimilar').checked = config.excludeSimilar;
+        }
+        if (document.getElementById('excludeAmbiguous')) {
+            document.getElementById('excludeAmbiguous').checked = config.excludeAmbiguous;
+        }
+
+        // Handle passphrase template
+        if (template === 'passphrase') {
+            document.getElementById('passphraseOptions').style.display = 'block';
+            this.generatePassphrase();
+        } else {
+            document.getElementById('passphraseOptions').style.display = 'none';
+            this.generatePassword();
+        }
+        
+        this.showToast(`Applied ${template} template settings`, 'success');
+    }
+
+    // Generate memorable passphrases
+    generatePassphrase() {
+        const wordCount = parseInt(document.getElementById('wordCountSlider')?.value || 4);
+        const capitalizeWords = document.getElementById('capitalizeWords')?.checked || true;
+        const addNumbers = document.getElementById('addNumbers')?.checked || true;
+        const addSeparators = document.getElementById('addSeparators')?.checked || true;
+
+        // Common word list (subset for demonstration - in production use larger wordlist)
+        const words = [
+            'apple', 'brave', 'cloud', 'dance', 'eagle', 'flame', 'grace', 'house',
+            'image', 'jumbo', 'knife', 'lemon', 'magic', 'novel', 'ocean', 'paper',
+            'queen', 'river', 'storm', 'tiger', 'unity', 'voice', 'whale', 'xenon',
+            'youth', 'zebra', 'beach', 'chair', 'dream', 'field', 'ghost', 'heart',
+            'light', 'music', 'night', 'plant', 'quick', 'robot', 'smile', 'truth',
+            'water', 'world', 'young', 'brave', 'clear', 'empty', 'fresh', 'happy'
+        ];
+
+        const separators = ['-', '_', '.', '!', '@', '#'];
+        let passphrase = [];
+
+        // Select random words
+        for (let i = 0; i < wordCount; i++) {
+            let word = words[Math.floor(Math.random() * words.length)];
+            
+            if (capitalizeWords) {
+                word = word.charAt(0).toUpperCase() + word.slice(1);
+            }
+            
+            passphrase.push(word);
+        }
+
+        // Add separators between words
+        if (addSeparators) {
+            const separator = separators[Math.floor(Math.random() * separators.length)];
+            passphrase = passphrase.join(separator);
+        } else {
+            passphrase = passphrase.join('');
+        }
+
+        // Add random numbers
+        if (addNumbers) {
+            const numbers = Math.floor(Math.random() * 9999).toString().padStart(2, '0');
+            passphrase += numbers;
+        }
+
+        const generatedInput = document.getElementById('generatedPassword');
+        if (generatedInput) {
+            generatedInput.value = passphrase;
+            this.updateGeneratedPasswordStrength(passphrase);
+        }
+
+        console.log('Generated passphrase:', passphrase);
     }
 
     async copyToClipboard() {
