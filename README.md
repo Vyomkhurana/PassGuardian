@@ -1,4 +1,58 @@
-# 🔐 PassGuardian - Enterprise Password Security Dashboard
+# �️ PassGuardian - Enterprise Password Security Platform
+
+<div align="center">
+
+![PassGuardian](https://img.shields.io/badge/PassGuardian-Enterprise%20Security-9d4edd?style=for-the-badge)
+![Version](https://img.shields.io/badge/version-2.0-00d4ff?style=for-the-badge)
+![License](https://img.shields.io/badge/license-MIT-00ff88?style=for-the-badge)
+
+**Military-Grade Password Security Analysis & Generation Platform**
+
+[Live Demo](https://passguardian.vercel.app) • [Features](#-features) • [Quick Start](#-quick-start) • [Deployment](#-deployment)
+
+</div>
+
+---
+
+## ✨ Features
+
+### �🔐 **Advanced Password Analysis**
+- ✅ **615M+ Breach Records** - Check against Have I Been Pwned database
+- ✅ **Real-time Entropy Calculation** - Measure password strength in bits
+- ✅ **Pattern Detection** - Identify common sequences and weak patterns
+- ✅ **Zero Data Storage** - Your passwords never leave your browser
+- ✅ **K-Anonymity Model** - Privacy-first breach checking
+- ✅ **Analysis History** - Track your security improvements
+
+### 🎯 **Military-Grade Password Generation**
+- ✅ **3-Tier Security Levels**: Basic / Enhanced / Military Grade
+- ✅ **Pattern-Based Generation** - Custom patterns (e.g., `Llll-nnnn-SSSS`)
+- ✅ **Pronounceable Passwords** - Easy to remember, hard to crack
+- ✅ **Batch Generation** - Generate up to 50 passwords at once
+- ✅ **CSV Export** - Export with metadata for password managers
+- ✅ **Custom Character Sets** - Use your own special characters
+- ✅ **Smart Templates** - Corporate, memorable, maximum security presets
+- ✅ **Passphrase Generator** - Word-based memorable passwords
+
+### 🎨 **Professional UI/UX**
+- ✅ **Dark/Light Theme Toggle** - Eye-friendly interface
+- ✅ **Responsive Design** - Perfect on desktop and mobile
+- ✅ **Animated Backgrounds** - Cybersecurity-themed visuals
+- ✅ **Real-time Feedback** - Instant strength indicators
+- ✅ **Toast Notifications** - Elegant user feedback
+- ✅ **Security Tips Section** - Best practices and guides
+- ✅ **FAQ Accordion** - Common questions answered
+- ✅ **Global Stats Dashboard** - Cybersecurity insights
+
+### 🔬 **Technical Excellence**
+- ✅ **Web Crypto API** - True cryptographic randomness
+- ✅ **Fisher-Yates Shuffle** - Enhanced randomization algorithm
+- ✅ **XOR Entropy Mixing** - Military-grade security option
+- ✅ **Chart.js Integration** - Beautiful data visualizations
+- ✅ **LocalStorage Caching** - Fast performance
+- ✅ **SEO Optimized** - Full meta tags and Open Graph support
+
+---
 
 ## 🚀 Quick Start (VS Code Terminal)
 

@@ -4187,6 +4187,516 @@ body {
     }
 }
 
+/* =========================== */
+/* SECURITY TIPS SECTION */
+/* =========================== */
+.security-tips-section {
+    padding: 4rem 0;
+    background: linear-gradient(180deg, var(--primary-dark) 0%, var(--secondary-dark) 100%);
+    position: relative;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.section-header i {
+    font-size: 3rem;
+    background: var(--cyber-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1rem;
+    display: inline-block;
+}
+
+.section-header h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 0.5rem;
+}
+
+.section-header p {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 1.1rem;
+}
+
+.tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.tip-card {
+    background: var(--card-dark);
+    border: 1px solid rgba(0, 212, 255, 0.1);
+    border-radius: 1rem;
+    padding: 2rem;
+    position: relative;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.tip-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--cyber-gradient);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.tip-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(0, 212, 255, 0.3);
+    box-shadow: 0 10px 40px rgba(0, 212, 255, 0.2);
+}
+
+.tip-card:hover::before {
+    transform: scaleX(1);
+}
+
+.tip-icon {
+    width: 60px;
+    height: 60px;
+    background: var(--neon-blue);
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: white;
+    margin-bottom: 1.5rem;
+}
+
+.tip-card h3 {
+    color: white;
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.tip-card p {
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.tip-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 2rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.tip-badge.good {
+    background: rgba(0, 255, 136, 0.2);
+    color: var(--cyber-green);
+    border: 1px solid var(--cyber-green);
+}
+
+.tip-badge.warning {
+    background: rgba(255, 140, 0, 0.2);
+    color: var(--cyber-orange);
+    border: 1px solid var(--cyber-orange);
+}
+
+.tip-badge.critical {
+    background: rgba(255, 7, 58, 0.2);
+    color: var(--cyber-red);
+    border: 1px solid var(--cyber-red);
+}
+
+/* Strength Guide */
+.strength-guide {
+    background: var(--tertiary-dark);
+    border: 1px solid rgba(157, 78, 221, 0.2);
+    border-radius: 1rem;
+    padding: 2rem;
+    margin-top: 2rem;
+}
+
+.strength-guide h3 {
+    color: white;
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.strength-guide h3 i {
+    color: var(--cyber-purple);
+}
+
+.strength-examples {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.strength-example {
+    background: var(--card-dark);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.weak-example {
+    border-color: rgba(255, 7, 58, 0.3);
+}
+
+.weak-example:hover {
+    border-color: var(--cyber-red);
+    box-shadow: 0 5px 20px rgba(255, 7, 58, 0.3);
+}
+
+.medium-example {
+    border-color: rgba(255, 140, 0, 0.3);
+}
+
+.medium-example:hover {
+    border-color: var(--cyber-orange);
+    box-shadow: 0 5px 20px rgba(255, 140, 0, 0.3);
+}
+
+.strong-example {
+    border-color: rgba(0, 255, 136, 0.3);
+}
+
+.strong-example:hover {
+    border-color: var(--cyber-green);
+    box-shadow: 0 5px 20px rgba(0, 255, 136, 0.3);
+}
+
+.example-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.strength-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 0.25rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.strength-badge.weak {
+    background: rgba(255, 7, 58, 0.2);
+    color: var(--cyber-red);
+}
+
+.strength-badge.medium {
+    background: rgba(255, 140, 0, 0.2);
+    color: var(--cyber-orange);
+}
+
+.strength-badge.strong {
+    background: rgba(0, 255, 136, 0.2);
+    color: var(--cyber-green);
+}
+
+.crack-time {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.example-password {
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    color: white;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    word-break: break-all;
+}
+
+.example-issues {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.example-issues i {
+    margin-right: 0.5rem;
+}
+
+.example-issues .fa-check-circle {
+    color: var(--cyber-green);
+}
+
+.example-issues .fa-times-circle {
+    color: var(--cyber-red);
+}
+
+/* =========================== */
+/* FAQ SECTION */
+/* =========================== */
+.faq-section {
+    padding: 4rem 0;
+    background: var(--secondary-dark);
+}
+
+.faq-grid {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.faq-item {
+    background: var(--card-dark);
+    border: 1px solid rgba(0, 212, 255, 0.1);
+    border-radius: 0.75rem;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.faq-item:hover {
+    border-color: rgba(0, 212, 255, 0.3);
+    box-shadow: 0 5px 20px rgba(0, 212, 255, 0.1);
+}
+
+.faq-question {
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    user-select: none;
+}
+
+.faq-question i {
+    color: var(--cyber-blue);
+    font-size: 0.8rem;
+    transition: transform 0.3s ease;
+}
+
+.faq-item.active .faq-question i {
+    transform: rotate(90deg);
+}
+
+.faq-question h4 {
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    flex: 1;
+}
+
+.faq-answer {
+    padding: 0 1.5rem 1.5rem 3.5rem;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.7;
+}
+
+.faq-answer p {
+    margin: 0;
+}
+
+.faq-answer strong {
+    color: var(--cyber-blue);
+    font-weight: 600;
+}
+
+/* =========================== */
+/* STATS DASHBOARD */
+/* =========================== */
+.stats-dashboard {
+    padding: 4rem 0;
+    background: linear-gradient(180deg, var(--secondary-dark) 0%, var(--primary-dark) 100%);
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.stat-card {
+    background: var(--card-dark);
+    border: 1px solid rgba(157, 78, 221, 0.2);
+    border-radius: 1rem;
+    padding: 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(157, 78, 221, 0.1) 0%, transparent 70%);
+    animation: pulse 3s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.1); opacity: 1; }
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(157, 78, 221, 0.5);
+    box-shadow: 0 10px 40px rgba(157, 78, 221, 0.3);
+}
+
+.stat-number {
+    font-size: 3rem;
+    font-weight: 800;
+    background: var(--neon-purple);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+.stat-label {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1rem;
+    position: relative;
+    z-index: 1;
+}
+
+.stat-icon {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    font-size: 3rem;
+    color: rgba(157, 78, 221, 0.1);
+    z-index: 0;
+}
+
+/* Enhanced Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.tip-card, .faq-item, .stat-card {
+    animation: fadeInUp 0.6s ease-out backwards;
+}
+
+.tip-card:nth-child(1) { animation-delay: 0.1s; }
+.tip-card:nth-child(2) { animation-delay: 0.2s; }
+.tip-card:nth-child(3) { animation-delay: 0.3s; }
+.tip-card:nth-child(4) { animation-delay: 0.4s; }
+.tip-card:nth-child(5) { animation-delay: 0.5s; }
+.tip-card:nth-child(6) { animation-delay: 0.6s; }
+
+/* Scroll to Top Button */
+.scroll-to-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 50px;
+    height: 50px;
+    background: var(--neon-purple);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(157, 78, 221, 0.4);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.scroll-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.scroll-to-top:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 30px rgba(157, 78, 221, 0.6);
+    background: linear-gradient(135deg, #9d4edd 0%, #c77dff 100%);
+}
+
+.scroll-to-top:active {
+    transform: translateY(-2px);
+}
+
+/* Smooth Scroll */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Glowing Effect on Hover for Interactive Elements */
+.tip-card:hover .tip-icon,
+.stat-card:hover {
+    animation: glow 1.5s ease-in-out infinite;
+}
+
+@keyframes glow {
+    0%, 100% {
+        box-shadow: 0 0 10px rgba(157, 78, 221, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(157, 78, 221, 0.6), 0 0 30px rgba(157, 78, 221, 0.4);
+    }
+}
+
+@media (max-width: 768px) {
+    .tips-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .strength-examples {
+        grid-template-columns: 1fr;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .section-header h2 {
+        font-size: 2rem;
+    }
+    
+    .section-header i {
+        font-size: 2rem;
+    }
+    
+    .scroll-to-top {
+        bottom: 1rem;
+        right: 1rem;
+        width: 45px;
+        height: 45px;
+        font-size: 1rem;
+    }
+}
+
 @media (max-width: 480px) {
     .main-container {
         padding-top: 80px;

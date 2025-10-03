@@ -3,6 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="PassGuardian - Enterprise-grade password security analysis platform. Check passwords against 615M+ breach records, generate military-grade passwords, and get real-time security insights.">
+    <meta name="keywords" content="password security, password generator, breach checker, password strength, cybersecurity, enterprise security, password manager">
+    <meta name="author" content="PassGuardian Security">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="PassGuardian - Enterprise Password Security Platform">
+    <meta property="og:description" content="Analyze passwords against millions of breaches, generate military-grade passwords, and protect your digital identity.">
+    <meta property="og:image" content="https://passguardian.vercel.app/og-image.png">
+    <meta property="og:url" content="https://passguardian.vercel.app">
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="PassGuardian - Enterprise Password Security">
+    <meta name="twitter:description" content="Military-grade password security analysis and generation platform">
+    <meta name="twitter:image" content="https://passguardian.vercel.app/twitter-image.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🛡️</text></svg>">
+    
     <title>PassGuardian - Enterprise Password Security Dashboard</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -755,6 +776,232 @@
 
         <!-- Toast Notifications -->
         <div class="toast-container" id="toastContainer"></div>
+
+        <!-- Scroll to Top Button -->
+        <button class="scroll-to-top" id="scrollToTop" title="Back to top">
+            <i class="fas fa-arrow-up"></i>
+        </button>
+
+        <!-- Security Tips Section -->
+        <section class="security-tips-section">
+            <div class="container">
+                <div class="section-header">
+                    <i class="fas fa-lightbulb"></i>
+                    <h2>Password Security Best Practices</h2>
+                    <p>Follow these expert recommendations to maximize your digital security</p>
+                </div>
+                
+                <div class="tips-grid">
+                    <div class="tip-card">
+                        <div class="tip-icon">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <h3>Use Unique Passwords</h3>
+                        <p>Never reuse passwords across different accounts. Each service should have its own unique, strong password to prevent cascade breaches.</p>
+                        <div class="tip-badge good">Essential</div>
+                    </div>
+                    
+                    <div class="tip-card">
+                        <div class="tip-icon">
+                            <i class="fas fa-ruler"></i>
+                        </div>
+                        <h3>Length Matters Most</h3>
+                        <p>Aim for at least 16 characters. A longer password exponentially increases crack time - from seconds to centuries.</p>
+                        <div class="tip-badge good">Critical</div>
+                    </div>
+                    
+                    <div class="tip-card">
+                        <div class="tip-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3>Enable 2FA Everywhere</h3>
+                        <p>Two-factor authentication adds an extra security layer. Use authenticator apps instead of SMS when possible.</p>
+                        <div class="tip-badge good">Recommended</div>
+                    </div>
+                    
+                    <div class="tip-card">
+                        <div class="tip-icon">
+                            <i class="fas fa-key"></i>
+                        </div>
+                        <h3>Use a Password Manager</h3>
+                        <p>Password managers securely store and generate strong passwords. You only need to remember one master password.</p>
+                        <div class="tip-badge good">Essential</div>
+                    </div>
+                    
+                    <div class="tip-card">
+                        <div class="tip-icon">
+                            <i class="fas fa-sync"></i>
+                        </div>
+                        <h3>Regular Password Updates</h3>
+                        <p>Change passwords periodically, especially for critical accounts. Update immediately if a breach is detected.</p>
+                        <div class="tip-badge warning">Important</div>
+                    </div>
+                    
+                    <div class="tip-card">
+                        <div class="tip-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h3>Avoid Personal Info</h3>
+                        <p>Don't use birthdays, names, pet names, or other easily guessable information in your passwords.</p>
+                        <div class="tip-badge critical">Warning</div>
+                    </div>
+                </div>
+
+                <!-- Password Strength Guide -->
+                <div class="strength-guide">
+                    <h3><i class="fas fa-chart-line"></i> Understanding Password Strength</h3>
+                    <div class="strength-examples">
+                        <div class="strength-example weak-example">
+                            <div class="example-header">
+                                <span class="strength-badge weak">Weak</span>
+                                <span class="crack-time">Cracked in: Seconds</span>
+                            </div>
+                            <div class="example-password">password123</div>
+                            <div class="example-issues">
+                                <i class="fas fa-times-circle"></i> Common word
+                                <i class="fas fa-times-circle"></i> Sequential numbers
+                                <i class="fas fa-times-circle"></i> Too short (11 chars)
+                            </div>
+                        </div>
+                        
+                        <div class="strength-example medium-example">
+                            <div class="example-header">
+                                <span class="strength-badge medium">Medium</span>
+                                <span class="crack-time">Cracked in: Days</span>
+                            </div>
+                            <div class="example-password">P@ssw0rd2024!</div>
+                            <div class="example-issues">
+                                <i class="fas fa-check-circle"></i> Mixed characters
+                                <i class="fas fa-times-circle"></i> Predictable pattern
+                                <i class="fas fa-times-circle"></i> Only 13 chars
+                            </div>
+                        </div>
+                        
+                        <div class="strength-example strong-example">
+                            <div class="example-header">
+                                <span class="strength-badge strong">Strong</span>
+                                <span class="crack-time">Cracked in: Centuries</span>
+                            </div>
+                            <div class="example-password">Tr0p!c@l-F0r3st#92xQ</div>
+                            <div class="example-issues">
+                                <i class="fas fa-check-circle"></i> 20+ characters
+                                <i class="fas fa-check-circle"></i> Random pattern
+                                <i class="fas fa-check-circle"></i> All character types
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="faq-section">
+            <div class="container">
+                <div class="section-header">
+                    <i class="fas fa-question-circle"></i>
+                    <h2>Frequently Asked Questions</h2>
+                    <p>Everything you need to know about password security</p>
+                </div>
+                
+                <div class="faq-grid">
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <i class="fas fa-chevron-right"></i>
+                            <h4>Is my password stored when I analyze it?</h4>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Absolutely not. PassGuardian uses a k-anonymity model where only a partial hash of your password is sent to external APIs. Your actual password never leaves your browser and is never stored anywhere.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <i class="fas fa-chevron-right"></i>
+                            <h4>What does "pwned" mean?</h4>
+                        </div>
+                        <div class="faq-answer">
+                            <p>"Pwned" means your password has appeared in known data breaches. If your password is pwned, change it immediately as attackers already have it in their databases.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <i class="fas fa-chevron-right"></i>
+                            <h4>How is password strength calculated?</h4>
+                        </div>
+                        <div class="faq-answer">
+                            <p>We use entropy calculations based on character set size and length, combined with pattern detection for common sequences. Higher entropy (measured in bits) means exponentially longer crack times.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <i class="fas fa-chevron-right"></i>
+                            <h4>Should I use the generated passwords?</h4>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Yes! Our generator uses cryptographically secure randomness (Web Crypto API) and offers multiple security levels. Generated passwords are far stronger than human-created ones.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <i class="fas fa-chevron-right"></i>
+                            <h4>What's the difference between security levels?</h4>
+                        </div>
+                        <div class="faq-answer">
+                            <p><strong>Basic:</strong> Standard crypto (fast). <strong>Enhanced:</strong> Double randomization (recommended). <strong>Military:</strong> Triple passes with XOR mixing (maximum security).</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <i class="fas fa-chevron-right"></i>
+                            <h4>Can I use this for business passwords?</h4>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Absolutely. PassGuardian is enterprise-grade and suitable for business use. However, always follow your organization's password policies and compliance requirements.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Dashboard -->
+        <section class="stats-dashboard">
+            <div class="container">
+                <div class="section-header">
+                    <i class="fas fa-chart-bar"></i>
+                    <h2>Global Security Insights</h2>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">615M+</div>
+                        <div class="stat-label">Breach Records</div>
+                        <div class="stat-icon"><i class="fas fa-database"></i></div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-number">80%</div>
+                        <div class="stat-label">Breaches from Weak Passwords</div>
+                        <div class="stat-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-number">$4.45M</div>
+                        <div class="stat-label">Average Data Breach Cost</div>
+                        <div class="stat-icon"><i class="fas fa-dollar-sign"></i></div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-number">300B+</div>
+                        <div class="stat-label">Password Attack Attempts/Year</div>
+                        <div class="stat-icon"><i class="fas fa-shield-virus"></i></div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
         <!-- Footer -->
         <footer class="dashboard-footer">

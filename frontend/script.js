@@ -158,6 +158,97 @@ class PassGuardianDashboard {
             console.log('Attempting to generate initial password');
             this.generatePassword();
         }, 500);
+
+        // FAQ Accordion
+        this.initFAQ();
+
+        // Animate stats on scroll
+        this.initScrollAnimations();
+
+        // Scroll to top button
+        this.initScrollToTop();
+    }
+
+    initScrollToTop() {
+        const scrollBtn = document.getElementById('scrollToTop');
+        if (!scrollBtn) return;
+
+        // Show/hide button based on scroll position
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollBtn.classList.add('visible');
+            } else {
+                scrollBtn.classList.remove('visible');
+            }
+        });
+
+        // Scroll to top on click
+        scrollBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    }
+
+    initFAQ() {
+        const faqItems = document.querySelectorAll('.faq-item');
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            question.addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
+                
+                // Close all other FAQ items
+                faqItems.forEach(otherItem => {
+                    if (otherItem !== item) {
+                        otherItem.classList.remove('active');
+                        const answer = otherItem.querySelector('.faq-answer');
+                        if (answer) {
+                            answer.style.maxHeight = null;
+                            answer.style.opacity = '0';
+                        }
+                    }
+                });
+                
+                // Toggle current item
+                item.classList.toggle('active');
+                const answer = item.querySelector('.faq-answer');
+                
+                if (!isActive) {
+                    answer.style.maxHeight = answer.scrollHeight + 'px';
+                    answer.style.opacity = '1';
+                } else {
+                    answer.style.maxHeight = null;
+                    answer.style.opacity = '0';
+                }
+            });
+        });
+
+        // Initialize answer styles
+        document.querySelectorAll('.faq-answer').forEach(answer => {
+            answer.style.maxHeight = '0';
+            answer.style.opacity = '0';
+            answer.style.overflow = 'hidden';
+            answer.style.transition = 'max-height 0.3s ease, opacity 0.3s ease';
+        });
+    }
+
+    initScrollAnimations() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-in');
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        // Observe all animatable elements
+        document.querySelectorAll('.tip-card, .stat-card, .faq-item, .strength-example').forEach(el => {
+            observer.observe(el);
+        });
     }
 
     bindHistoryEvents() {
