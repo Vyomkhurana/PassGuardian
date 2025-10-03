@@ -174,6 +174,47 @@
                                             <span class="checkmark"></span>
                                             Exclude Ambiguous ({[()]}'"~)
                                         </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" id="pronounceableMode">
+                                            <span class="checkmark"></span>
+                                            Pronounceable Password
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" id="requireAllTypes">
+                                            <span class="checkmark"></span>
+                                            Require All Selected Types
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="option-group">
+                                    <h5>Security Level</h5>
+                                    <div class="security-level-selector">
+                                        <label class="radio-label">
+                                            <input type="radio" name="securityLevel" value="basic" id="basicSecurity">
+                                            <span class="radiomark"></span>
+                                            Basic (Fast)
+                                        </label>
+                                        <label class="radio-label">
+                                            <input type="radio" name="securityLevel" value="enhanced" id="enhancedSecurity" checked>
+                                            <span class="radiomark"></span>
+                                            Enhanced (Recommended)
+                                        </label>
+                                        <label class="radio-label">
+                                            <input type="radio" name="securityLevel" value="military" id="militarySecurity">
+                                            <span class="radiomark"></span>
+                                            Military Grade (Slow)
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="option-group">
+                                    <h5>Custom Character Set</h5>
+                                    <div class="custom-charset-container">
+                                        <textarea id="customCharset" placeholder="Enter custom characters to include (optional)" maxlength="200"></textarea>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" id="useCustomOnly">
+                                            <span class="checkmark"></span>
+                                            Use Only Custom Characters
+                                        </label>
                                     </div>
                                 </div>
                                 <div class="generated-password">
@@ -214,6 +255,33 @@
                                             <i class="fas fa-key"></i>
                                             Passphrase
                                         </button>
+                                        <button class="template-btn" data-template="pattern" title="Custom pattern-based password">
+                                            <i class="fas fa-code"></i>
+                                            Pattern
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="pattern-generator" id="patternGenerator" style="display: none;">
+                                    <h5>Pattern-Based Generation</h5>
+                                    <div class="pattern-input-group">
+                                        <label>Pattern:</label>
+                                        <input type="text" id="passwordPattern" placeholder="e.g., Llll-nnnn-SSSS (L=Upper, l=lower, n=number, S=symbol)" maxlength="50">
+                                        <div class="pattern-help">
+                                            <small>
+                                                <strong>Pattern Guide:</strong> 
+                                                L = Uppercase letter, l = lowercase letter, n = number, S = symbol, 
+                                                ? = any character, - = literal dash, @ = literal @
+                                            </small>
+                                        </div>
+                                    </div>
+                                    <div class="pattern-examples">
+                                        <h6>Common Patterns:</h6>
+                                        <div class="example-patterns">
+                                            <button class="pattern-example" data-pattern="Llllnnnn!">Word+Numbers</button>
+                                            <button class="pattern-example" data-pattern="LLnn-llnn-SSSS">Corporate Format</button>
+                                            <button class="pattern-example" data-pattern="llll@Llll.nn">Email Style</button>
+                                            <button class="pattern-example" data-pattern="Lll-Lll-nnn">Three Words</button>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="passphrase-options" id="passphraseOptions" style="display: none;">
@@ -240,10 +308,48 @@
                                         </label>
                                     </div>
                                 </div>
-                                <button id="useGenerated" class="use-btn">
-                                    <i class="fas fa-arrow-left"></i>
-                                    Use This Password
-                                </button>
+                                <div class="generator-actions">
+                                    <button id="useGenerated" class="use-btn">
+                                        <i class="fas fa-arrow-left"></i>
+                                        Use This Password
+                                    </button>
+                                    <button id="batchGenerate" class="batch-btn" title="Generate multiple passwords">
+                                        <i class="fas fa-layer-group"></i>
+                                        Batch Generate
+                                    </button>
+                                    <button id="exportPasswords" class="export-btn" title="Export generated passwords">
+                                        <i class="fas fa-download"></i>
+                                        Export
+                                    </button>
+                                </div>
+                                <div class="batch-generator" id="batchGenerator" style="display: none;">
+                                    <h5>Batch Password Generation</h5>
+                                    <div class="batch-options">
+                                        <div class="batch-count-group">
+                                            <label>Number of passwords: <span id="batchCountValue">5</span></label>
+                                            <input type="range" id="batchCountSlider" min="2" max="50" value="5" class="slider">
+                                        </div>
+                                        <div class="batch-format">
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" id="addTimestamp">
+                                                <span class="checkmark"></span>
+                                                Add Timestamp
+                                            </label>
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" id="addDescription">
+                                                <span class="checkmark"></span>
+                                                Add Descriptions
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="batch-results" id="batchResults">
+                                        <!-- Generated passwords will appear here -->
+                                    </div>
+                                    <button id="generateBatch" class="generate-batch-btn">
+                                        <i class="fas fa-magic"></i>
+                                        Generate Batch
+                                    </button>
+                                </div>
                             </div>
                                 <i class="fas fa-shield-alt"></i>
                                 <span>Analyze Security</span>
